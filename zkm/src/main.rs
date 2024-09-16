@@ -25,7 +25,8 @@ use zkm_prover::prover::prove;
 use zkm_prover::verifier::verify_proof;
 
 const FIBONACCI_ELF: &str = "./fibonacci/target/mips-unknown-linux-musl/debug/fibonacci";
-const SHA2_ELF: &str = "./sha2/target/mips-unknown-linux-musl/debug/sha2-bench";
+//const SHA2_ELF: &str = "./sha2/target/mips-unknown-linux-musl/debug/sha2-bench";
+const SHA2_ELF: &str = "./sha2/target/mips-unknown-linux-musl/release/sha2-bench";
 const SHA2_CHAIN_ELF: &str = "./sha2-chain/target/mips-unknown-linux-musl/debug/sha2-chain";
 const SHA3_CHAIN_ELF: &str = "./sha3-chain/target/mips-unknown-linux-musl/debug/sha3-chain";
 const SHA3_ELF: &str = "./sha3/target/mips-unknown-linux-musl/debug/sha3-bench";
@@ -44,7 +45,7 @@ fn main() {
 
     let lengths = [32, 256, 512, 1024, 2048];
     benchmark(benchmark_sha2, &lengths, "../benchmark_outputs/sha2_zkm.csv", "byte length");
-    benchmark(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm.csv", "byte length");
+   /* benchmark(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm.csv", "byte length");
 
     let ns = [100, 1000, 10000, 50000];
     benchmark(benchmark_fibonacci, &ns, "../benchmark_outputs/fiboancci_zkm.csv", "n");
@@ -54,7 +55,7 @@ fn main() {
 
     let iters = [230, 460, 920, 1840, 3680];
     benchmark(benchmark_sha2_chain, &iters, "../benchmark_outputs/sha2_chain_zkm.csv", "iters");
-    benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters");
+    benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters"); */
 }
 
 fn prove_single_seg_common(
