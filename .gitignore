@@ -3,4 +3,3 @@ benchmark_outputs/*
 .DS_Store
 **/*.log
 target
-push.sh
