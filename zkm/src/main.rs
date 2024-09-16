@@ -30,7 +30,8 @@ const SHA2_CHAIN_ELF: &str = "./sha2-chain/target/mips-unknown-linux-musl/debug/
 const SHA3_CHAIN_ELF: &str = "./sha3-chain/target/mips-unknown-linux-musl/debug/sha3-chain";
 const SHA3_ELF: &str = "./sha3/target/mips-unknown-linux-musl/debug/sha3-bench";
 const BIGMEM_ELF: &str = "./bigmem/target/mips-unknown-linux-musl/debug/bigmem";
-const SEG_SIZE: usize = 4194304;
+//const SEG_SIZE: usize = 4194304;
+const SEG_SIZE: usize = 262144; //G
 
 const DEGREE_BITS_RANGE: [Range<usize>; 6] = [10..21, 12..22, 12..21, 8..21, 6..21, 13..23];
 
