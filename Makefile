@@ -32,9 +32,9 @@ bench-risczero:
 	cd risczero/bigmem && cargo run --release
 
 build-zkm:
-	cd zkm/fibonacci && cargo build --target=mips-unknown-linux-musl
-	cd zkm/sha2 && cargo build --target=mips-unknown-linux-musl
-	cd zkm/sha3 && cargo build --target=mips-unknown-linux-musl
-	cd zkm/bigmem && cargo build --target=mips-unknown-linux-musl
-	cd zkm/sha2-chain && cargo build --target=mips-unknown-linux-musl
-	cd zkm/sha3-chain && cargo build --target=mips-unknown-linux-musl
+	cd zkm/fibonacci && cargo build --target=mips-unknown-linux-musl --release
+	cd zkm/sha2 && cargo build --target=mips-unknown-linux-musl --release
+	cd zkm/sha3 && cargo build --target=mips-unknown-linux-musl --release
+	cd zkm/bigmem && cargo build --target=mips-unknown-linux-musl --release
+	cd zkm/sha2-chain && cargo build --target=mips-unknown-linux-musl --release
+	cd zkm/sha3-chain && cargo build --target=mips-unknown-linux-musl --release
