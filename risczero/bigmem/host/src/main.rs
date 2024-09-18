@@ -16,7 +16,7 @@ fn bench_bigmem(n: u32) -> (Duration, usize) {
     let prover = LocalProver::new("prover");
 
     let start = std::time::Instant::now();
-    let receipt = prover.prove(env, BIGMEM_ELF).unwrap();
+    let receipt = prover.prove(env, BIGMEM_ELF).unwrap().receipt;
     let end = std::time::Instant::now();
     let duration = end.duration_since(start);
 
