@@ -5,7 +5,7 @@ use risc0_zkvm::{ExecutorEnv, LocalProver, Prover};
 use utils::{benchmark, size};
 
 fn main() {
-    let iters = [230, 460, 920, 1840, /* 3680 */ ];
+    let iters = [230, 460, 920, 1840, 3680];
     benchmark(bench_sha2_chain, &iters, "../../benchmark_outputs/sha2_chain_risczero.csv", "n");
 }
 
