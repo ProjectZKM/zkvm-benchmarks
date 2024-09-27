@@ -56,10 +56,9 @@ fn prove_single_seg_common(
     basedir: &str,
     block: &str,
     file: &str,
-    seg_size: usize,
 ) -> usize {
     let seg_reader = BufReader::new(File::open(seg_file).unwrap());
-    let kernel = segment_kernel(basedir, block, file, seg_reader, seg_size);
+    let kernel = segment_kernel(basedir, block, file, seg_reader);
 
     const D: usize = 2;
     type C = PoseidonGoldilocksConfig;
@@ -88,7 +87,6 @@ fn prove_multi_seg_common(
     basedir: &str,
     block: &str,
     file: &str,
-    seg_size: usize,
     seg_file_number: usize,
     seg_start_id: usize,
 ) -> usize {
@@ -110,7 +108,7 @@ fn prove_multi_seg_common(
     let seg_file = format!("{}/{}", seg_dir, seg_start_id);
     log::info!("Process segment {}", seg_file);
     let seg_reader = BufReader::new(File::open(seg_file).unwrap());
-    let input_first = segment_kernel(basedir, block, file, seg_reader, seg_size);
+    let input_first = segment_kernel(basedir, block, file, seg_reader);
     let mut timing = TimingTree::new("prove root first", log::Level::Info);
     let (mut agg_proof, mut updated_agg_public_values) =
         all_circuits.prove_root(&all_stark, &input_first, &config, &mut timing).unwrap();
@@ -126,7 +124,7 @@ fn prove_multi_seg_common(
         let seg_file = format!("{}/{}", seg_dir, seg_start_id + 1);
         log::info!("Process segment {}", seg_file);
         let seg_reader = BufReader::new(File::open(seg_file).unwrap());
-        let input = segment_kernel(basedir, block, file, seg_reader, seg_size);
+        let input = segment_kernel(basedir, block, file, seg_reader);
         timing = TimingTree::new("prove root second", log::Level::Info);
         let (root_proof, public_values) =
             all_circuits.prove_root(&all_stark, &input, &config, &mut timing).unwrap();
@@ -161,7 +159,7 @@ fn prove_multi_seg_common(
         let seg_file = format!("{}/{}", seg_dir, base_seg + (i << 1));
         log::info!("Process segment {}", seg_file);
         let seg_reader = BufReader::new(File::open(&seg_file).unwrap());
-        let input_first = segment_kernel(basedir, block, file, seg_reader, seg_size);
+        let input_first = segment_kernel(basedir, block, file, seg_reader);
         let mut timing = TimingTree::new("prove root first", log::Level::Info);
         let (root_proof_first, first_public_values) =
             all_circuits.prove_root(&all_stark, &input_first, &config, &mut timing).unwrap();
@@ -172,7 +170,7 @@ fn prove_multi_seg_common(
         let seg_file = format!("{}/{}", seg_dir, base_seg + (i << 1) + 1);
         log::info!("Process segment {}", seg_file);
         let seg_reader = BufReader::new(File::open(&seg_file).unwrap());
-        let input = segment_kernel(basedir, block, file, seg_reader, seg_size);
+        let input = segment_kernel(basedir, block, file, seg_reader);
         let mut timing = TimingTree::new("prove root second", log::Level::Info);
         let (root_proof, public_values) =
             all_circuits.prove_root(&all_stark, &input, &config, &mut timing).unwrap();
@@ -247,21 +245,15 @@ fn benchmark_sha2_chain(iters: u32) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/sha2-chain";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
-
     let end = Instant::now();
     let duration = end.duration_since(start);
 
@@ -279,23 +271,16 @@ fn benchmark_sha3_chain(iters: u32) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/sha3-chain";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
-
     let end = Instant::now();
-
     let duration = end.duration_since(start);
 
     let _hash =  state.read_public_values::<[u8; 32]>();
@@ -311,21 +296,15 @@ fn benchmark_sha2(num_bytes: usize) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/sha2";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
-
     let end = Instant::now();
     let duration = end.duration_since(start);
 
@@ -342,19 +321,14 @@ fn benchmark_sha3(num_bytes: usize) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/sha3";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
@@ -371,19 +345,14 @@ fn benchmark_fibonacci(n: u32) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/fibonacci";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
@@ -399,19 +368,14 @@ fn benchmark_bigmem(value: u32) -> (Duration, usize) {
     let seg_size = SEG_SIZE;
     let seg_path = "/tmp/zkm/bigmem";
 
-    let (total_steps, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
-
-    let mut seg_num = 1usize;
-    if seg_size != 0 {
-        seg_num = (total_steps + seg_size - 1) / seg_size;
-    }
+    let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
-        prove_single_seg_common(&seg_file, "", "", "", total_steps)
+        prove_single_seg_common(&seg_file, "", "", "")
     } else {
-        prove_multi_seg_common(seg_path, "", "", "", seg_size, seg_num, 0)
+        prove_multi_seg_common(seg_path, "", "", "", seg_num, 0)
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
