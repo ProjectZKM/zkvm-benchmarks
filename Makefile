@@ -3,6 +3,7 @@ bench-all:
 	make bench-sp1
 	make bench-risczero
 	make bench-zkm
+	make bench-zkm2
 
 bench-jolt:
 	cd jolt && RUSTFLAGS="-C target-cpu=native" cargo run --release
@@ -14,6 +15,10 @@ bench-sp1:
 bench-zkm:
 	make build-zkm
 	cd zkm && RUSTFLAGS="-C target-cpu=native" cargo run --release
+
+bench-zkm2:
+	make build-zkm2
+	cd zkm2 && cargo run --release
 
 build-sp1:
 	cd sp1/fibonacci && cargo prove build
@@ -38,3 +43,6 @@ build-zkm:
 	cd zkm/bigmem && cargo build --target=mips-unknown-linux-musl --release
 	cd zkm/sha2-chain && cargo build --target=mips-unknown-linux-musl --release
 	cd zkm/sha3-chain && cargo build --target=mips-unknown-linux-musl --release
+
+build-zkm2:
+	cd zkm2 && cargo build --release

@@ -37,6 +37,12 @@ linker = "<path-to>/mips-linux-muslsf-cross/bin/mips-linux-muslsf-gcc"
 rustflags = ["--cfg", 'target_os="zkvm"',"-C", "target-feature=+crt-static", "-C", "link-arg=-g"]
 ```
 
+### Install zkm2
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+source ~/.zkm-toolchain/env
+```
+
 ## Running
 To run all benchmarks run:
 ```bash
@@ -45,7 +51,7 @@ make bench-all
 
 The benchmark results should be outputted in CSV form in `benchmark_outputs`.
 
-To run an individual benchmark run `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
+To run an individual benchmark run `make bench-zkm2`, `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
 
 
 ## Disclaimer
