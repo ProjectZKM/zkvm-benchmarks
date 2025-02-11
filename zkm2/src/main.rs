@@ -1,5 +1,3 @@
-#![feature(generic_const_exprs)]
-
 use std::time::{Duration, Instant};
 
 use zkm2_build::include_elf;

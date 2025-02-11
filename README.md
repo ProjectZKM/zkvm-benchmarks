@@ -15,7 +15,7 @@ cargo risczero install
 
 ### Install SP1
 ```bash
-curl -L https://sp1.succinct.xyz | bash
+curl -L https://sp1up.succinct.xyz | bash
 ```
 
 Follow the instructions outputted by this command then run:
