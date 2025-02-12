@@ -25,16 +25,8 @@ sp1up
 
 ### Install zkm
 ```bash
-wget http://musl.cc/mips-linux-muslsf-cross.tgz
-tar -zxvf mips-linux-muslsf-cross.tgz
-```
-
-* Modify ~/.cargo/config:
-
-```bash
-[target.mips-unknown-linux-musl]
-linker = "<path-to>/mips-linux-muslsf-cross/bin/mips-linux-muslsf-gcc"
-rustflags = ["--cfg", 'target_os="zkvm"',"-C", "target-feature=+crt-static", "-C", "link-arg=-g"]
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+source ~/.zkm-toolchain/env
 ```
 
 ### Install zkm2

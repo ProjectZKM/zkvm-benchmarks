@@ -17,8 +17,6 @@ fn main() {
     // 1 Shard
     let iters = [230, 460, 920, 1840, /* 3680 */ ];
     let shard_sizes = [1 << 20, 1 << 21, 1 << 22, 1 << 23, /* 1 << 24 */]; // Max shard_size = 2^24-1
-    // let iters = [230, 460, 920, 1840, /* 3680 */];
-    // let shard_sizes = [1 << 20, 1 << 21, 1 << 22, 1 << 23, /* 1 << 24 */];
     benchmark_with_shard_size(benchmark_sha2_chain, &iters, &shard_sizes, "../benchmark_outputs/sha2_chain_sp1_1_shard.csv", "iters");
 
     // 2 Shards
@@ -60,9 +58,14 @@ fn benchmark_with_shard_size(func: fn(u32) -> (Duration, usize), iters: &[u32], 
     assert_eq!(iters.len(), shard_sizes.len());
     let mut info = Vec::new();
     for bench_i in 0..iters.len() {
+        println!("benchmark_with_shard_size start, bench_i: {}, shard_size: {}", bench_i, shard_sizes[bench_i]);
         std::env::set_var("SHARD_SIZE", format!("{}", shard_sizes[bench_i]));
         let duration_and_size = func(iters[bench_i]);
         info.push(duration_and_size);
+        println!(
+            "benchmark_with_shard_size end, duration: {:?}, shard_size: {}",
+            duration_and_size.0.as_secs_f64(), duration_and_size.1,
+        );
     }
     utils::write_csv(file_name, input_name, iters, &info);
 }
@@ -76,10 +79,12 @@ fn benchmark_sha2_chain(iters: u32) -> (Duration, usize) {
     stdin.write(&input);
     stdin.write(&iters);
 
+    println!("benchmark_sha2_chain start, iters: {}", iters);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha2_chain end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
@@ -95,10 +100,12 @@ fn benchmark_sha3_chain(iters: u32) -> (Duration, usize) {
     stdin.write(&input);
     stdin.write(&iters);
 
+    println!("benchmark_sha3_chain start, iters: {}", iters);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha3_chain end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
@@ -113,10 +120,12 @@ fn benchmark_sha2(num_bytes: usize) -> (Duration, usize) {
     let input = vec![5u8; num_bytes];
     stdin.write(&input);
 
+    println!("benchmark_sha2 start, num_bytes: {}", num_bytes);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha2 end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
@@ -131,10 +140,12 @@ fn benchmark_sha3(num_bytes: usize) -> (Duration, usize) {
     let input = vec![5u8; num_bytes];
     stdin.write(&input);
 
+    println!("benchmark_sha3 start, num_bytes: {}", num_bytes);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha3_chain end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
@@ -148,10 +159,12 @@ fn bench_fibonacci(n: u32) -> (Duration, usize) {
     let mut stdin = SP1Stdin::new();
     stdin.write(&n);
 
+    println!("benchmark_fibonacci start, n: {}", n);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_fibonacc end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
@@ -165,10 +178,12 @@ fn bench_bigmem(value: u32) -> (Duration, usize) {
     let mut stdin = SP1Stdin::new();
     stdin.write(&value);
 
+    println!("benchmark_bigmem start, value: {}", value);
     let start = Instant::now();
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_bigmem end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 
