@@ -21,6 +21,7 @@ fn bench_sha2_chain(iters: u32) -> (Duration, usize) {
 
     let prover = LocalProver::new("prover");
 
+    println!("benchmark_sha2_chain start, iters: {}", iters);
     let start = std::time::Instant::now();
     let receipt = prover.prove(env, SHA2_CHAIN_BENCH_ELF).unwrap().receipt;
     let end = std::time::Instant::now();
@@ -28,6 +29,7 @@ fn bench_sha2_chain(iters: u32) -> (Duration, usize) {
 
     let _output: [u8; 32] = receipt.journal.decode().unwrap();
     receipt.verify(SHA2_CHAIN_BENCH_ID).unwrap();
+    println!("benchmark_sha2_chain end, duration: {:?}", duration.as_secs_f64());
     
     (duration, size(&receipt))
 }

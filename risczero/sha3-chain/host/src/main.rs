@@ -21,10 +21,12 @@ fn bench_sha3_chain(iters: u32) -> (Duration, usize) {
 
     let prover = LocalProver::new("prover");
 
+    println!("benchmark_sha3_chain start, iters: {}", iters);
     let start = std::time::Instant::now();
     let receipt = prover.prove(env, SHA3_CHAIN_BENCH_ELF).unwrap().receipt;
     let end = std::time::Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha2_chain end, duration: {:?}", duration.as_secs_f64());
 
     let _output: [u8; 32] = receipt.journal.decode().unwrap();
     receipt.verify(SHA3_CHAIN_BENCH_ID).unwrap();
