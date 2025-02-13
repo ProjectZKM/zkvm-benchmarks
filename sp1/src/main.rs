@@ -145,7 +145,7 @@ fn benchmark_sha3(num_bytes: usize) -> (Duration, usize) {
     let proof = client.prove(&pk, &stdin).run().unwrap();
     let end = Instant::now();
     let duration = end.duration_since(start);
-    println!("benchmark_sha3_chain end, duration: {:?}", duration.as_secs_f64());
+    println!("benchmark_sha3 end, duration: {:?}", duration.as_secs_f64());
 
     client.verify(&proof, &vk).expect("verification failed");
 

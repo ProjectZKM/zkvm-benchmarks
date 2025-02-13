@@ -23,7 +23,8 @@ bench-zkm2:
 	cd zkm2 && cargo run --release
 
 bench-risczero:
-	cd risczero/sha2-chain && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	# cd risczero/sha2-chain && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	cd risczero/sha2-chain && cargo run --release
 	cd risczero/fibonacci && cargo run --release
 	cd risczero/sha3-chain && cargo run --release
 	cd risczero/sha2 && cargo run --release
