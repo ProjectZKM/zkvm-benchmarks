@@ -21,10 +21,10 @@ use zkm_prover::verifier::verify_proof;
 
 const FIBONACCI_ELF: &str = "./programs/fibonacci/elf/mips-zkm-zkvm-elf";
 const SHA2_ELF: &str = "./programs/sha2/elf/mips-zkm-zkvm-elf";
-const SHA2_CHAIN_ELF: &str = "./programs/elf/mips-zkm-zkvm-elf";
-const SHA3_CHAIN_ELF: &str = "./programs/elf/mips-zkm-zkvm-elf";
+const SHA2_CHAIN_ELF: &str = "./programs/sha2-chain/elf/mips-zkm-zkvm-elf";
+const SHA3_CHAIN_ELF: &str = "./programs/sha3-chain/elf/mips-zkm-zkvm-elf";
 const SHA3_ELF: &str = "./programs/sha3/elf/mips-zkm-zkvm-elf";
-const BIGMEM_ELF: &str = "./programs/elf/mips-zkm-zkvm-elf";
+const BIGMEM_ELF: &str = "./programs/bigmem/elf/mips-zkm-zkvm-elf";
 const SEG_SIZE: usize = 262144 * 8; // G
 
 const DEGREE_BITS_RANGE: [Range<usize>; 12] = [
@@ -58,9 +58,9 @@ fn main() {
     let values = [5];
     benchmark(benchmark_bigmem, &values, "../benchmark_outputs/bigmem_zkm.csv", "value");
 
-    let iters = [230, 460, 920, 1840, 3680];
+    let iters = [230, 460, /* 920, 1840, 3680 */];
     benchmark(benchmark_sha2_chain, &iters, "../benchmark_outputs/sha2_chain_zkm.csv", "iters");
-    benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters");
+    // benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters");
 }
 
 fn prove_single_seg_common(
