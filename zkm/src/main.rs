@@ -16,19 +16,31 @@ use zkm_prover::config::StarkConfig;
 use zkm_prover::cpu::kernel::assembler::segment_kernel;
 use zkm_prover::fixed_recursive_verifier::AllRecursiveCircuits;
 use zkm_prover::proof;
-use zkm_prover::proof::PublicValues;
 use zkm_prover::prover::prove;
 use zkm_prover::verifier::verify_proof;
 
-const FIBONACCI_ELF: &str = "./fibonacci/target/mips-unknown-linux-musl/release/fibonacci";
-const SHA2_ELF: &str = "./sha2/target/mips-unknown-linux-musl/release/sha2-bench";
-const SHA2_CHAIN_ELF: &str = "./sha2-chain/target/mips-unknown-linux-musl/release/sha2-chain";
-const SHA3_CHAIN_ELF: &str = "./sha3-chain/target/mips-unknown-linux-musl/release/sha3-chain";
-const SHA3_ELF: &str = "./sha3/target/mips-unknown-linux-musl/release/sha3-bench";
-const BIGMEM_ELF: &str = "./bigmem/target/mips-unknown-linux-musl/release/bigmem";
-const SEG_SIZE: usize = 262144 * 8; //G
+const FIBONACCI_ELF: &str = "./programs/fibonacci/elf/mips-zkm-zkvm-elf";
+const SHA2_ELF: &str = "./programs/sha2/elf/mips-zkm-zkvm-elf";
+const SHA2_CHAIN_ELF: &str = "./programs/sha2-chain/elf/mips-zkm-zkvm-elf";
+const SHA3_CHAIN_ELF: &str = "./programs/sha3-chain/elf/mips-zkm-zkvm-elf";
+const SHA3_ELF: &str = "./programs/sha3/elf/mips-zkm-zkvm-elf";
+const BIGMEM_ELF: &str = "./programs/bigmem/elf/mips-zkm-zkvm-elf";
+const SEG_SIZE: usize = 262144 * 8; // G
 
-const DEGREE_BITS_RANGE: [Range<usize>; 6] = [10..23, 10..23, 10..23, 8..23, 6..23, 13..25];
+const DEGREE_BITS_RANGE: [Range<usize>; 12] = [
+    10..21,
+    12..22,
+    11..21,
+    8..21,
+    6..10,
+    6..10,
+    6..16,
+    6..16,
+    6..16,
+    6..16,
+    6..21,
+    13..23,
+];
 
 fn main() {
     init_logger();
@@ -46,9 +58,9 @@ fn main() {
     let values = [5];
     benchmark(benchmark_bigmem, &values, "../benchmark_outputs/bigmem_zkm.csv", "value");
 
-    let iters = [230, 460, 920, 1840, 3680];
+    let iters = [230, 460, /* 920, 1840, 3680 */];
     benchmark(benchmark_sha2_chain, &iters, "../benchmark_outputs/sha2_chain_zkm.csv", "iters");
-    benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters");
+    // benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm.csv", "iters");
 }
 
 fn prove_single_seg_common(
@@ -110,15 +122,17 @@ fn prove_multi_seg_common(
     let seg_reader = BufReader::new(File::open(seg_file).unwrap());
     let input_first = segment_kernel(basedir, block, file, seg_reader);
     let mut timing = TimingTree::new("prove root first", log::Level::Info);
-    let (mut agg_proof, mut updated_agg_public_values) =
+    // let (mut agg_proof, mut updated_agg_public_values) =
+    let mut agg_receipt =
         all_circuits.prove_root(&all_stark, &input_first, &config, &mut timing).unwrap();
 
     timing.filter(Duration::from_millis(100)).print();
-    all_circuits.verify_root(agg_proof.clone()).unwrap();
+    all_circuits.verify_root(agg_receipt.clone()).unwrap();
 
     let mut base_seg = seg_start_id + 1;
     let mut seg_num = seg_file_number - 1;
     let mut is_agg = false;
+    let assumptions = vec![];
 
     if seg_file_number % 2 == 0 {
         let seg_file = format!("{}/{}", seg_dir, seg_start_id + 1);
@@ -126,29 +140,22 @@ fn prove_multi_seg_common(
         let seg_reader = BufReader::new(File::open(seg_file).unwrap());
         let input = segment_kernel(basedir, block, file, seg_reader);
         timing = TimingTree::new("prove root second", log::Level::Info);
-        let (root_proof, public_values) =
-            all_circuits.prove_root(&all_stark, &input, &config, &mut timing).unwrap();
-        timing.filter(Duration::from_millis(100)).print();
-
-        all_circuits.verify_root(root_proof.clone()).unwrap();
-
-        // Update public values for the aggregation.
-        let agg_public_values = PublicValues {
-            roots_before: updated_agg_public_values.roots_before,
-            roots_after: public_values.roots_after,
-            userdata: public_values.userdata,
-        };
-        timing = TimingTree::new("prove aggression", log::Level::Info);
-        // We can duplicate the proofs here because the state hasn't mutated.
-        (agg_proof, updated_agg_public_values) = all_circuits.prove_aggregation(
-            false,
-            &agg_proof,
-            false,
-            &root_proof,
-            agg_public_values.clone(),
+        let receipt = all_circuits.prove_root_with_assumption(
+            &all_stark,
+            &input,
+            &config,
+            &mut timing,
+            assumptions.clone(),
         ).unwrap();
         timing.filter(Duration::from_millis(100)).print();
-        all_circuits.verify_aggregation(&agg_proof).unwrap();
+
+        all_circuits.verify_root(receipt.clone()).unwrap();
+
+        timing = TimingTree::new("prove aggression", log::Level::Info);
+        // We can duplicate the proofs here because the state hasn't mutated.
+        agg_receipt = all_circuits.prove_aggregation(false, &agg_receipt, false, &receipt).unwrap();
+        timing.filter(Duration::from_millis(100)).print();
+        all_circuits.verify_aggregation(&agg_receipt).unwrap();
 
         is_agg = true;
         base_seg = seg_start_id + 2;
@@ -161,67 +168,55 @@ fn prove_multi_seg_common(
         let seg_reader = BufReader::new(File::open(&seg_file).unwrap());
         let input_first = segment_kernel(basedir, block, file, seg_reader);
         let mut timing = TimingTree::new("prove root first", log::Level::Info);
-        let (root_proof_first, first_public_values) =
-            all_circuits.prove_root(&all_stark, &input_first, &config, &mut timing).unwrap();
+        let root_receipt_first = all_circuits.prove_root_with_assumption(
+            &all_stark,
+            &input_first,
+            &config,
+            &mut timing,
+            assumptions.clone(),
+        ).unwrap();
 
         timing.filter(Duration::from_millis(100)).print();
-        all_circuits.verify_root(root_proof_first.clone()).unwrap();
+        all_circuits.verify_root(root_receipt_first.clone()).unwrap();
 
         let seg_file = format!("{}/{}", seg_dir, base_seg + (i << 1) + 1);
         log::info!("Process segment {}", seg_file);
         let seg_reader = BufReader::new(File::open(&seg_file).unwrap());
         let input = segment_kernel(basedir, block, file, seg_reader);
         let mut timing = TimingTree::new("prove root second", log::Level::Info);
-        let (root_proof, public_values) =
-            all_circuits.prove_root(&all_stark, &input, &config, &mut timing).unwrap();
-        timing.filter(Duration::from_millis(100)).print();
-
-        all_circuits.verify_root(root_proof.clone()).unwrap();
-
-        // Update public values for the aggregation.
-        let new_agg_public_values = PublicValues {
-            roots_before: first_public_values.roots_before,
-            roots_after: public_values.roots_after,
-            userdata: public_values.userdata,
-        };
-        timing = TimingTree::new("prove aggression", log::Level::Info);
-        // We can duplicate the proofs here because the state hasn't mutated.
-        let (new_agg_proof, new_updated_agg_public_values) = all_circuits.prove_aggregation(
-            false,
-            &root_proof_first,
-            false,
-            &root_proof,
-            new_agg_public_values,
+        let root_receipt = all_circuits.prove_root_with_assumption(
+            &all_stark,
+            &input,
+            &config,
+            &mut timing,
+            assumptions.clone(),
         ).unwrap();
         timing.filter(Duration::from_millis(100)).print();
-        all_circuits.verify_aggregation(&new_agg_proof).unwrap();
 
-        // Update public values for the nested aggregation.
-        let agg_public_values = PublicValues {
-            roots_before: updated_agg_public_values.roots_before,
-            roots_after: new_updated_agg_public_values.roots_after,
-            userdata: new_updated_agg_public_values.userdata,
-        };
+        all_circuits.verify_root(root_receipt.clone()).unwrap();
+
+        timing = TimingTree::new("prove aggression", log::Level::Info);
+        // We can duplicate the proofs here because the state hasn't mutated.
+        let new_agg_receipt =
+            all_circuits.prove_aggregation(false, &root_receipt_first, false, &root_receipt).unwrap();
+        timing.filter(Duration::from_millis(100)).print();
+        all_circuits.verify_aggregation(&new_agg_receipt).unwrap();
+
         timing = TimingTree::new("prove nested aggression", log::Level::Info);
 
         // We can duplicate the proofs here because the state hasn't mutated.
-        (agg_proof, updated_agg_public_values) = all_circuits.prove_aggregation(
-            is_agg,
-            &agg_proof,
-            true,
-            &new_agg_proof,
-            agg_public_values.clone(),
-        ).unwrap();
+        agg_receipt =
+            all_circuits.prove_aggregation(is_agg, &agg_receipt, true, &new_agg_receipt).unwrap();
         is_agg = true;
         timing.filter(Duration::from_millis(100)).print();
 
-        all_circuits.verify_aggregation(&agg_proof).unwrap();
+        all_circuits.verify_aggregation(&agg_receipt).unwrap();
     }
 
-    let (block_proof, _block_public_values) =
-        all_circuits.prove_block(None, &agg_proof, updated_agg_public_values).unwrap();
+    let block_receipt =
+        all_circuits.prove_block(None, &agg_receipt).unwrap();
 
-    let size = serde_json::to_string(&block_proof.proof).unwrap().len();
+    let size = serde_json::to_string(&block_receipt).unwrap().len();
     log::info!(
         "proof size: {:?}",
         size
@@ -247,6 +242,7 @@ fn benchmark_sha2_chain(iters: u32) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_sha2_chain start, iters: {}", iters);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -256,6 +252,7 @@ fn benchmark_sha2_chain(iters: u32) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha2_chain end, duration: {:?}", duration.as_secs_f64());
 
     let _hash =  state.read_public_values::<[u8; 32]>();
 
@@ -273,6 +270,7 @@ fn benchmark_sha3_chain(iters: u32) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_sha3_chain start, iters: {}", iters);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -282,6 +280,7 @@ fn benchmark_sha3_chain(iters: u32) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha3_chain end, duration: {:?}", duration.as_secs_f64());
 
     let _hash =  state.read_public_values::<[u8; 32]>();
 
@@ -298,6 +297,7 @@ fn benchmark_sha2(num_bytes: usize) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_sha2 start, num_bytes: {}", num_bytes);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -307,6 +307,7 @@ fn benchmark_sha2(num_bytes: usize) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha2 end, duration: {:?}", duration.as_secs_f64());
 
     let _hash =  state.read_public_values::<[u8; 32]>();
 
@@ -323,6 +324,7 @@ fn benchmark_sha3(num_bytes: usize) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_sha3 start, num_bytes: {}", num_bytes);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -332,6 +334,7 @@ fn benchmark_sha3(num_bytes: usize) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_sha3 end, duration: {:?}", duration.as_secs_f64());
 
     let _hash =  state.read_public_values::<[u8; 32]>();
 
@@ -347,6 +350,7 @@ fn benchmark_fibonacci(n: u32) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_fibonacci start, n: {}", n);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -356,6 +360,7 @@ fn benchmark_fibonacci(n: u32) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_fibonacc end, duration: {:?}", duration.as_secs_f64());
 
     let _output = state.read_public_values::<u128>();
     (duration, size)
@@ -370,6 +375,7 @@ fn benchmark_bigmem(value: u32) -> (Duration, usize) {
 
     let (_total_steps, seg_num, mut state) = split_prog_into_segs(state, seg_path, "", seg_size);
 
+    println!("benchmark_bigmem start, value: {}", value);
     let start = Instant::now();
     let size = if seg_num == 1 {
         let seg_file = format!("{seg_path}/{}", 0);
@@ -379,6 +385,7 @@ fn benchmark_bigmem(value: u32) -> (Duration, usize) {
     };
     let end = Instant::now();
     let duration = end.duration_since(start);
+    println!("benchmark_bigmem end, duration: {:?}", duration.as_secs_f64());
 
     let _output = state.read_public_values::<u32>();
     (duration, size)

@@ -15,7 +15,7 @@ cargo risczero install
 
 ### Install SP1
 ```bash
-curl -L https://sp1.succinct.xyz | bash
+curl -L https://sp1up.succinct.xyz | bash
 ```
 
 Follow the instructions outputted by this command then run:
@@ -25,17 +25,12 @@ sp1up
 
 ### Install zkm
 ```bash
-wget http://musl.cc/mips-linux-muslsf-cross.tgz
-tar -zxvf mips-linux-muslsf-cross.tgz
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+source ~/.zkm-toolchain/env
 ```
 
-* Modify ~/.cargo/config:
-
-```bash
-[target.mips-unknown-linux-musl]
-linker = "<path-to>/mips-linux-muslsf-cross/bin/mips-linux-muslsf-gcc"
-rustflags = ["--cfg", 'target_os="zkvm"',"-C", "target-feature=+crt-static", "-C", "link-arg=-g"]
-```
+### Install zkm2
+Rust toolchain: https://github.com/zkMIPS/toolchain/releases/tag/just_for_test
 
 ## Running
 To run all benchmarks run:
@@ -45,7 +40,7 @@ make bench-all
 
 The benchmark results should be outputted in CSV form in `benchmark_outputs`.
 
-To run an individual benchmark run `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
+To run an individual benchmark run `make bench-zkm2`, `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
 
 
 ## Disclaimer
