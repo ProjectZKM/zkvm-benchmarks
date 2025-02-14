@@ -1,5 +1,3 @@
-use std::time::{Duration, Instant};
-
 use utils::benchmark;
 use zkm_script::*;
 

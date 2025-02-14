@@ -1,7 +1,4 @@
 use std::time::{Duration, Instant};
-
-use utils::benchmark;
-
 use std::fs::File;
 use std::io::BufReader;
 use std::ops::Range;

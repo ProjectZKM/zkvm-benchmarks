@@ -1,9 +1,4 @@
-use std::time::{Duration, Instant};
-
-use zkm2_build::include_elf;
-use zkm2_sdk::{ProverClient, ZKMStdin};
-use utils::{benchmark, size};
-
+use utils::benchmark;
 use zkm2_script::*;
 
 fn main() {
