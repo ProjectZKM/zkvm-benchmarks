@@ -17,3 +17,31 @@ zkm2-sdk = { path = "../../zkm2/crates/sdk" }
 
 [build-dependencies]
 zkm2-build = { path = "../../zkm2/crates/build" }
+
+[[bin]]
+name = "fibo"
+path = "src/bin/fibonacci.rs"
+
+[[bin]]
+name = "bigmem"
+path = "src/bin/bigmem.rs"
+
+[[bin]]
+name = "sha2"
+path = "src/bin/sha2.rs"
+
+[[bin]]
+name = "sha3"
+path = "src/bin/sha3.rs"
+
+[[bin]]
+name = "sha2-chain"
+path = "src/bin/sha2_chain.rs"
+
+[[bin]]
+name = "sha3-chain"
+path = "src/bin/sha3_chain.rs"
+
+[[bin]]
+name = "all"
+path = "src/main.rs"
