@@ -5,5 +5,5 @@ fn main() {
     init_logger();
 
     let lengths = [32, 256, 512, 1024, 2048];
-    benchmark(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm2.csv", "byte length");
+    benchmark(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_sp1.csv", "byte length");
 }

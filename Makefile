@@ -21,8 +21,14 @@ bench-sp1:
 
 bench-zkm:
 	# rust toolchain path: ~/.zkm-toolchain/rust-toolchain-x86-64-unknown-linux-gnu-20241217/bin
-	# cd zkm && RUSTFLAGS="-C target-cpu=native" cargo run --release
-	cd zkm && cargo run --release
+	# cd zkm && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
+	# cd zkm && cargo run --bin all --release
+	cd zkm && cargo run --bin sha2-chain --release
+	cd zkm && cargo run --bin fibo --release
+	cd zkm && cargo run --bin sha3-chain --release
+	cd zkm && cargo run --bin sha2 --release
+	cd zkm && cargo run --bin sha3 --release
+	cd zkm && cargo run --bin bigmem --release
 
 bench-zkm2:
 	# cd zkm2 && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
