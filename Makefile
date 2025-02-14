@@ -12,12 +12,12 @@ bench-sp1:
 	# rust toolchain path: ~/.sp1/toolchains/2w6J4cHc3D/bin
 	# cd sp1 && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
 	# cd sp1 && cargo run --bin all --release
-	cd zkm2 && cargo run --bin fibo --release
-	cd zkm2 && cargo run --bin bigmem --release
-	cd zkm2 && cargo run --bin sha2 --release
-	cd zkm2 && cargo run --bin sha3 --release
-	cd zkm2 && cargo run --bin sha2-chain --release
-	cd zkm2 && cargo run --bin sha3-chain --release
+	cd sp1 && cargo run --bin fibo --release
+	cd sp1 && cargo run --bin bigmem --release
+	cd sp1 && cargo run --bin sha2 --release
+	cd sp1 && cargo run --bin sha3 --release
+	cd sp1 && cargo run --bin sha2-chain --release
+	cd sp1 && cargo run --bin sha3-chain --release
 
 bench-zkm:
 	# rust toolchain path: ~/.zkm-toolchain/rust-toolchain-x86-64-unknown-linux-gnu-20241217/bin
