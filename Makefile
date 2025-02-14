@@ -19,8 +19,14 @@ bench-zkm:
 	cd zkm && cargo run --release
 
 bench-zkm2:
-	# cd zkm2 && RUSTFLAGS="-C target-cpu=native" cargo run --release
-	cd zkm2 && cargo run --release
+	# cd zkm2 && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
+	# cd zkm2 && cargo run --bin all --release
+	cd zkm2 && cargo run --bin sha2-chain --release
+	cd zkm2 && cargo run --bin fibo --release
+	cd zkm2 && cargo run --bin sha3-chain --release
+	cd zkm2 && cargo run --bin sha2 --release
+	cd zkm2 && cargo run --bin sha3 --release
+	cd zkm2 && cargo run --bin bigmem --release
 
 bench-risczero:
 	# rust toolchain path: ~/.risc0/toolchains/r0.1.81.0-risc0-rust-x86_64-unknown-linux-gnu/bin/
