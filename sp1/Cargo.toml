@@ -14,3 +14,31 @@ bincode = "1.3.3"
 
 [build-dependencies]
 sp1-build = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
+
+[[bin]]
+name = "fibo"
+path = "src/bin/fibonacci.rs"
+
+[[bin]]
+name = "bigmem"
+path = "src/bin/bigmem.rs"
+
+[[bin]]
+name = "sha2"
+path = "src/bin/sha2.rs"
+
+[[bin]]
+name = "sha3"
+path = "src/bin/sha3.rs"
+
+[[bin]]
+name = "sha2-chain"
+path = "src/bin/sha2_chain.rs"
+
+[[bin]]
+name = "sha3-chain"
+path = "src/bin/sha3_chain.rs"
+
+[[bin]]
+name = "all"
+path = "src/main.rs"
