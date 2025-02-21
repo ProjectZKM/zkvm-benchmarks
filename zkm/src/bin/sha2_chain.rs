@@ -1,3 +1,4 @@
+use utils::benchmark;
 use zkm_script::{benchmark_sha2_chain, init_logger};
 
 fn main() {
