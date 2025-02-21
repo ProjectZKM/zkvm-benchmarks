@@ -36,7 +36,7 @@ const DEGREE_BITS_RANGE: [Range<usize>; 12] = [
     6..16,
     6..16,
     6..21,
-    13..23,
+    13..25,
 ];
 
 pub fn init_logger() {
