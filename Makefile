@@ -22,8 +22,8 @@ bench-zkm2:
 bench-risczero:
 	# rust toolchain path: ~/.risc0/toolchains/r0.1.81.0-risc0-rust-x86_64-unknown-linux-gnu/bin/
 	cd risczero/sha2-chain && RUSTFLAGS="-C target-cpu=native" cargo run --release
-	cd risczero/fibonacci && cargo run --release
-	cd risczero/bigmem && cargo run --release
-	cd risczero/sha2 && cargo run --release
-	cd risczero/sha3 && cargo run --release
-	cd risczero/sha3-chain && cargo run --release
+	cd risczero/fibonacci && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	cd risczero/bigmem && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	cd risczero/sha2 && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	cd risczero/sha3 && RUSTFLAGS="-C target-cpu=native" cargo run --release
+	cd risczero/sha3-chain && RUSTFLAGS="-C target-cpu=native" cargo run --release
