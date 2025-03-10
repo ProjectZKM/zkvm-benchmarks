@@ -2720,6 +2720,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "p3-baby-bear"
+version = "0.1.0"
+source = "git+https://github.com/zkMIPS/Plonky3#93967fce8949d2275c06fd91e9f495a35418d68d"
+dependencies = [
+ "p3-field",
+ "p3-mds",
+ "p3-monty-31",
+ "p3-poseidon2",
+ "p3-symmetric",
+ "rand",
+ "serde",
+]
+
+[[package]]
 name = "p3-bn254-fr"
 version = "0.1.0"
 source = "git+https://github.com/zkMIPS/Plonky3#93967fce8949d2275c06fd91e9f495a35418d68d"
@@ -2862,20 +2876,6 @@ dependencies = [
  "p3-maybe-rayon",
  "p3-util",
  "tracing",
-]
-
-[[package]]
-name = "p3-koala-bear"
-version = "0.1.0"
-source = "git+https://github.com/zkMIPS/Plonky3#93967fce8949d2275c06fd91e9f495a35418d68d"
-dependencies = [
- "p3-field",
- "p3-mds",
- "p3-monty-31",
- "p3-poseidon2",
- "p3-symmetric",
- "rand",
- "serde",
 ]
 
 [[package]]
@@ -5317,6 +5317,7 @@ dependencies = [
  "p3-field",
  "p3-maybe-rayon",
  "rand",
+ "rayon-scan",
  "rrs-succinct",
  "serde",
  "serde_json",
@@ -5352,15 +5353,18 @@ dependencies = [
  "num_cpus",
  "p256",
  "p3-air",
+ "p3-baby-bear",
  "p3-challenger",
  "p3-field",
  "p3-keccak-air",
- "p3-koala-bear",
  "p3-matrix",
  "p3-maybe-rayon",
+ "p3-poseidon2",
  "p3-uni-stark",
  "p3-util",
  "rand",
+ "rayon",
+ "rayon-scan",
  "serde",
  "size",
  "snowbridge-amcl",
@@ -5428,8 +5432,8 @@ dependencies = [
  "hex",
  "lazy_static",
  "num-bigint 0.4.6",
+ "p3-baby-bear",
  "p3-field",
- "p3-koala-bear",
  "p3-monty-31",
  "p3-poseidon2",
  "p3-symmetric",
@@ -5449,11 +5453,11 @@ dependencies = [
  "itertools 0.13.0",
  "lru",
  "num-bigint 0.4.6",
+ "p3-baby-bear",
  "p3-bn254-fr",
  "p3-challenger",
  "p3-commit",
  "p3-field",
- "p3-koala-bear",
  "p3-matrix",
  "p3-symmetric",
  "serde",
@@ -5481,13 +5485,13 @@ dependencies = [
  "itertools 0.13.0",
  "num-traits",
  "p3-air",
+ "p3-baby-bear",
  "p3-bn254-fr",
  "p3-challenger",
  "p3-commit",
  "p3-dft",
  "p3-field",
  "p3-fri",
- "p3-koala-bear",
  "p3-matrix",
  "p3-symmetric",
  "p3-util",
@@ -5511,9 +5515,9 @@ version = "0.0.1"
 dependencies = [
  "backtrace",
  "itertools 0.13.0",
+ "p3-baby-bear",
  "p3-bn254-fr",
  "p3-field",
- "p3-koala-bear",
  "p3-symmetric",
  "serde",
  "tracing",
@@ -5534,13 +5538,13 @@ dependencies = [
  "hashbrown 0.14.5",
  "itertools 0.13.0",
  "p3-air",
+ "p3-baby-bear",
  "p3-bn254-fr",
  "p3-challenger",
  "p3-commit",
  "p3-dft",
  "p3-field",
  "p3-fri",
- "p3-koala-bear",
  "p3-matrix",
  "p3-maybe-rayon",
  "p3-merkle-tree",
@@ -5580,8 +5584,8 @@ dependencies = [
  "hex",
  "log",
  "num-bigint 0.4.6",
+ "p3-baby-bear",
  "p3-field",
- "p3-koala-bear",
  "p3-symmetric",
  "serde",
  "serde_json",
@@ -5622,9 +5626,9 @@ dependencies = [
  "indicatif",
  "itertools 0.13.0",
  "log",
+ "p3-baby-bear",
  "p3-field",
  "p3-fri",
- "p3-koala-bear",
  "prost",
  "reqwest",
  "reqwest-middleware",
@@ -5652,8 +5656,10 @@ dependencies = [
  "arrayref",
  "hashbrown 0.14.5",
  "itertools 0.13.0",
+ "num-bigint 0.4.6",
  "num-traits",
  "p3-air",
+ "p3-baby-bear",
  "p3-challenger",
  "p3-circle",
  "p3-commit",
@@ -5661,7 +5667,6 @@ dependencies = [
  "p3-field",
  "p3-fri",
  "p3-keccak",
- "p3-koala-bear",
  "p3-matrix",
  "p3-maybe-rayon",
  "p3-mds",

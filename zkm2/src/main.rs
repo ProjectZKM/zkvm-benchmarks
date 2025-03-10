@@ -1,21 +1,21 @@
-use utils::benchmark;
+use utils::benchmark_v2;
 use zkm2_script::*;
 
 fn main() {
     init_logger();
 
     let iters = [230, 460, /* 920, 1840,  3680 */];
-    benchmark(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm2.csv", "iters");
+    benchmark_v2(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm2.csv", "iters");
 
     let lengths = [32, 256, 512, 1024, 2048];
-    benchmark(benchmark_sha2, &lengths, "../benchmark_outputs/sha2_zkm2.csv", "byte length");
-    benchmark(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm2.csv", "byte length");
+    benchmark_v2(benchmark_sha2, &lengths, "../benchmark_outputs/sha2_zkm2.csv", "byte length");
+    benchmark_v2(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm2.csv", "byte length");
 
     let ns = [100, 1000, 10000, 50000];
-    benchmark(bench_fibonacci, &ns, "../benchmark_outputs/fibonacci_zkm2.csv", "n");
+    benchmark_v2(bench_fibonacci, &ns, "../benchmark_outputs/fibonacci_zkm2.csv", "n");
 
     let values = [5u32];
-    benchmark(bench_bigmem, &values, "../benchmark_outputs/bigmem_zkm2.csv", "value");
+    benchmark_v2(bench_bigmem, &values, "../benchmark_outputs/bigmem_zkm2.csv", "value");
 
     // 1 Shard
     let shard_sizes = [1 << 20, 1 << 21, /* 1 << 22, 1 << 23, 1 << 24 */]; // Max shard_size = 2^24-1
