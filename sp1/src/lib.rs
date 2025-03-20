@@ -4,6 +4,9 @@ use sp1_build::include_elf;
 use sp1_sdk::{Prover, ProverClient, SP1Stdin};
 use utils::size;
 
+mod tendermint;
+pub use tendermint::bench_tendermint;
+
 const FIBONACCI_ELF: &[u8] = include_elf!("fibonacci");
 const SHA2_ELF: &[u8] = include_elf!("sha2-bench");
 const SHA2_CHAIN_ELF: &[u8] = include_elf!("sha2-chain");

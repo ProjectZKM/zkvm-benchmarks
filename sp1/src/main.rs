@@ -17,6 +17,9 @@ fn main() {
     let values = [5u32];
     benchmark_v2(bench_bigmem, &values, "../benchmark_outputs/bigmem_sp1.csv", "value");
 
+    let values = [2279100u32];
+    benchmark_v2(bench_tendermint, &values, "../benchmark_outputs/tendermint_sp1.csv", "block");
+
     // 1 Shard
     let iters = [230, 460, /* 920, 1840,  3680 */];
     let shard_sizes = [1 << 20, 1 << 21, /* 1 << 22, 1 << 23, 1 << 24 */]; // Max shard_size = 2^24-1

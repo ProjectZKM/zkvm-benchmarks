@@ -8,6 +8,12 @@ edition = "2021"
 utils = { path = "../utils" }
 hex = "0.4.3"
 bincode = "1.3.3"
+serde = "1.0.204"
+serde_json = "1.0.132"
+tendermint-light-client-verifier = { version = "0.35.0", default-features = false, features = [
+  "rust-crypto",
+] }
+serde_cbor = "0.11.2"
 # zkm2-build = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
 # zkm2-core-machine = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
 # zkm2-sdk = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
@@ -41,6 +47,10 @@ path = "src/bin/sha2_chain.rs"
 [[bin]]
 name = "sha3-chain"
 path = "src/bin/sha3_chain.rs"
+
+[[bin]]
+name = "tend"
+path = "src/bin/tendermint.rs"
 
 [[bin]]
 name = "all"
