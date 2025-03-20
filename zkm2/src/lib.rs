@@ -1,9 +1,11 @@
-
 use std::time::{Duration, Instant};
 
 use zkm2_build::include_elf;
 use zkm2_sdk::{ProverClient, ZKMStdin};
 use utils::size;
+
+mod tendermint;
+pub use tendermint::bench_tendermint;
 
 const FIBONACCI_ELF: &[u8] = include_elf!("fibonacci");
 const SHA2_ELF: &[u8] = include_elf!("sha2-bench");
