@@ -6,6 +6,8 @@ members = [
   "sha2-chain",
   "sha3",
   "sha3-chain",
+  "sha3-precompile",
+  "sha3-precompile-chain",
   "tendermint",
 ]
 resolver = "2"

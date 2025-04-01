@@ -49,6 +49,10 @@ name = "sha3-chain"
 path = "src/bin/sha3_chain.rs"
 
 [[bin]]
+name = "sha3-precompile"
+path = "src/bin/sha3_precompile.rs"
+
+[[bin]]
 name = "tend"
 path = "src/bin/tendermint.rs"
 

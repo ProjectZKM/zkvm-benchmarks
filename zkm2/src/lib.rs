@@ -12,6 +12,8 @@ const SHA2_ELF: &[u8] = include_elf!("sha2-bench");
 const SHA2_CHAIN_ELF: &[u8] = include_elf!("sha2-chain");
 const SHA3_CHAIN_ELF: &[u8] = include_elf!("sha3-chain");
 const SHA3_ELF: &[u8] = include_elf!("sha3-bench");
+const SHA3_PRECOMPILE_CHAIN_ELF: &[u8] = include_elf!("sha3-precompile-chain");
+const SHA3_PRECOMPILE_ELF: &[u8] = include_elf!("sha3-precompile-bench");
 const BIGMEM_ELF: &[u8] = include_elf!("bigmem");
 
 pub fn init_logger() {
@@ -85,6 +87,31 @@ pub fn benchmark_sha3_chain(iters: u32) -> (Duration, usize, u64) {
     (duration, size(&proof), report.total_instruction_count())
 }
 
+pub fn benchmark_sha3_precompile_chain(iters: u32) -> (Duration, usize, u64) {
+    let client = ProverClient::cpu();
+    let (pk, vk) = client.setup(SHA3_PRECOMPILE_CHAIN_ELF);
+
+    let mut stdin = ZKMStdin::new();
+    let input = [5u8; 32];
+    stdin.write(&input);
+    stdin.write(&iters);
+
+    println!("benchmark_sha3_precompile_chain start, iters: {}", iters);
+    let start = Instant::now();
+    let proof = client.prove(&pk, stdin.clone()).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!("benchmark_sha3_precompile_chain end, duration: {:?}", duration.as_secs_f64());
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(SHA3_PRECOMPILE_CHAIN_ELF, stdin).run().unwrap();
+    println!("executed program with {} cycles", report.total_instruction_count());
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
 pub fn benchmark_sha2(num_bytes: usize) -> (Duration, usize, u64) {
     let client = ProverClient::cpu();
     let (pk, vk) = client.setup(SHA2_ELF);
@@ -128,6 +155,30 @@ pub fn benchmark_sha3(num_bytes: usize) -> (Duration, usize, u64) {
 
     // Execute the program using the `ProverClient.execute` method, without generating a proof.
     let (_, report) = client.execute(SHA3_ELF, stdin).run().unwrap();
+    println!("executed program with {} cycles", report.total_instruction_count());
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
+pub fn benchmark_sha3_precompile(num_bytes: usize) -> (Duration, usize, u64) {
+    let client = ProverClient::cpu();
+    let (pk, vk) = client.setup(SHA3_PRECOMPILE_ELF);
+
+    let mut stdin = ZKMStdin::new();
+    let input = vec![5u8; num_bytes];
+    stdin.write(&input);
+
+    println!("benchmark_sha3_precompile start, num_bytes: {}", num_bytes);
+    let start = Instant::now();
+    let proof = client.prove(&pk, stdin.clone()).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!("benchmark_sha3_precompile end, duration: {:?}", duration.as_secs_f64());
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(SHA3_PRECOMPILE_ELF, stdin).run().unwrap();
     println!("executed program with {} cycles", report.total_instruction_count());
 
     (duration, size(&proof), report.total_instruction_count())

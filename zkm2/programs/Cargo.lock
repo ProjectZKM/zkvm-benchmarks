@@ -645,6 +645,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "sha3-precompile-bench"
+version = "0.1.0"
+dependencies = [
+ "zkm2-zkvm",
+]
+
+[[package]]
+name = "sha3-precompile-chain"
+version = "0.1.0"
+dependencies = [
+ "sha3",
+ "zkm2-zkvm",
+]
+
+[[package]]
 name = "signature"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
