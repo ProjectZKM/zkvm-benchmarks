@@ -8,6 +8,8 @@ members = [
   "sha3-chain",
   "sha3-precompile",
   "sha3-precompile-chain",
+  "keccak-precompile",
+  "keccak-precompile-chain",
   "tendermint",
 ]
 resolver = "2"

@@ -3955,9 +3955,9 @@ dependencies = [
 
 [[package]]
 name = "rustix"
-version = "1.0.3"
+version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e56a18552996ac8d29ecc3b190b4fdbb2d91ca4ec396de7bbffaf43f3d637e96"
+checksum = "7a04a32fb43fcdef85b977ce7f77a150805e4b2ea1f2656898d4a547dde78df6"
 dependencies = [
  "bitflags",
  "errno",
@@ -5863,7 +5863,6 @@ dependencies = [
  "strum_macros",
  "tempfile",
  "thiserror 1.0.69",
- "tiny-keccak",
  "tracing",
  "tracing-forest",
  "tracing-subscriber",

@@ -5,13 +5,16 @@ fn main() {
     init_logger();
 
     let iters = [230, 460, /* 920, 1840,  3680 */];
-    benchmark_v2(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm2.csv", "iters");
-    benchmark_v2(benchmark_sha3_precompile_chain, &iters, "../benchmark_outputs/sha3_precompile_chain_zkm2.csv", "iters");
+    // benchmark_v2(benchmark_sha3_chain, &iters, "../benchmark_outputs/sha3_chain_zkm2.csv", "iters");
+    // benchmark_v2(benchmark_sha3_precompile_chain, &iters, "../benchmark_outputs/sha3_precompile_chain_zkm2.csv", "iters");
+    benchmark_v2(benchmark_keccak_precompile_chain, &iters, "../benchmark_outputs/sponge_keccak_precompile_chain_zkm2.csv", "iters");
 
     let lengths = [32, 256, 512, 1024, 2048];
     // benchmark_v2(benchmark_sha2, &lengths, "../benchmark_outputs/sha2_zkm2.csv", "byte length");
-    benchmark_v2(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm2.csv", "byte length");
-    benchmark_v2(benchmark_sha3_precompile, &lengths, "../benchmark_outputs/sha3_precompile_zkm2.csv", "byte length");
+    // benchmark_v2(benchmark_sha3, &lengths, "../benchmark_outputs/sha3_zkm2.csv", "byte length");
+    // benchmark_v2(benchmark_sha3_precompile, &lengths, "../benchmark_outputs/sha3_precompile_zkm2.csv", "byte length");
+    
+    benchmark_v2(benchmark_keccak_precompile, &lengths, "../benchmark_outputs/sponge_keccak_precompile_zkm2.csv", "byte length");
 
     // let ns = [100, 1000, 10000, 50000];
     // benchmark_v2(bench_fibonacci, &ns, "../benchmark_outputs/fibonacci_zkm2.csv", "n");

@@ -326,6 +326,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "keccak-precompile"
+version = "0.1.0"
+dependencies = [
+ "zkm2-zkvm",
+]
+
+[[package]]
+name = "keccak-precompile-chain"
+version = "0.1.0"
+dependencies = [
+ "zkm2-zkvm",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
