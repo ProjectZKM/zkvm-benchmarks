@@ -5613,6 +5613,7 @@ dependencies = [
  "strum_macros",
  "tempfile",
  "thiserror 1.0.69",
+ "tiny-keccak",
  "tracing",
  "tracing-forest",
  "tracing-subscriber",
