@@ -1,5 +1,5 @@
 use utils::benchmark_v2;
-use zkm2_script::*;
+use zkm_script::*;
 
 fn main() {
     init_logger();

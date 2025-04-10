@@ -1,7 +1,7 @@
 use std::time::{Duration, Instant};
 
-use zkm2_build::include_elf;
-use zkm2_sdk::{ProverClient, ZKMStdin};
+use zkm_build::include_elf;
+use zkm_sdk::{ProverClient, ZKMStdin};
 use utils::size;
 
 mod tendermint;
@@ -16,7 +16,7 @@ const BIGMEM_ELF: &[u8] = include_elf!("bigmem");
 
 pub fn init_logger() {
     std::env::set_var("RUST_LOG", "info");
-    zkm2_core_machine::utils::setup_logger();
+    zkm_core_machine::utils::setup_logger();
 }
 
 pub fn benchmark_with_shard_size(func: fn(u32) -> (Duration, usize, u64), iters: &[u32], shard_sizes: &[usize], file_name: &str, input_name: &str) {
