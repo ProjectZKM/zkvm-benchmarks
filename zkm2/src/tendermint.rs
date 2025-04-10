@@ -6,8 +6,8 @@ use tendermint_light_client_verifier::{
     options::Options, types::LightBlock, ProdVerifier, Verdict, Verifier,
 };
 
-use zkm2_sdk::include_elf;
-use zkm2_sdk::{ProverClient, ZKMStdin};
+use zkm_sdk::include_elf;
+use zkm_sdk::{ProverClient, ZKMStdin};
 
 use utils::size;
 

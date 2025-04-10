@@ -1,7 +1,7 @@
 [workspace]
 [package]
 version = "0.1.0"
-name = "zkm2-script"
+name = "zkm-script"
 edition = "2021"
 
 [dependencies]
@@ -14,15 +14,16 @@ tendermint-light-client-verifier = { version = "0.35.0", default-features = fals
   "rust-crypto",
 ] }
 serde_cbor = "0.11.2"
-# zkm2-build = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
-# zkm2-core-machine = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
-# zkm2-sdk = { git = "https://github.com/zkMIPS/zkm2.git", branch = "dev/init" }
-zkm2-build = { path = "../../zkm2/crates/build" }
-zkm2-core-machine = { path = "../../zkm2/crates/core/machine" }
-zkm2-sdk = { path = "../../zkm2/crates/sdk" }
+zkm-build = { git = "https://github.com/zkMIPS/zkMIPS.git" }
+zkm-core-machine = { git = "https://github.com/zkMIPS/zkMIPS.git" }
+zkm-sdk = { git = "https://github.com/zkMIPS/zkMIPS.git" }
+# zkm-build = { path = "../../zkMIPS/crates/build" }
+# zkm-core-machine = { path = "../../zkMIPS/crates/core/machine" }
+# zkm-sdk = { path = "../../zkMIPS/crates/sdk" }
 
 [build-dependencies]
-zkm2-build = { path = "../../zkm2/crates/build" }
+zkm-build = { git = "https://github.com/zkMIPS/zkMIPS.git" }
+# zkm-build = { path = "../../zkMIPS/crates/build" }
 
 [[bin]]
 name = "fibo"

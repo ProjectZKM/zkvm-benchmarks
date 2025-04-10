@@ -1,9 +1,9 @@
 #![no_std]
 #![no_main]
-zkm2_zkvm::entrypoint!(main);
+zkm_zkvm::entrypoint!(main);
 
 pub fn main() {
-    let n = zkm2_zkvm::io::read::<u32>();
+    let n = zkm_zkvm::io::read::<u32>();
 
     let mut a: u128 = 0;
     let mut b: u128 = 1;
@@ -14,5 +14,5 @@ pub fn main() {
         b = sum;
     }
 
-    zkm2_zkvm::io::commit(&b);
+    zkm_zkvm::io::commit(&b);
 }

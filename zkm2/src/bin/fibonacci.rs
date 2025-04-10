@@ -1,5 +1,5 @@
 use utils::benchmark_v2;
-use zkm2_script::{bench_fibonacci, init_logger};
+use zkm_script::{bench_fibonacci, init_logger};
 
 fn main() {
     init_logger();
