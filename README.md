@@ -30,7 +30,10 @@ source ~/.zkm-toolchain/env
 ```
 
 ### Install zkm2
-Rust toolchain: https://github.com/zkMIPS/toolchain/releases/tag/just_for_test
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+source ~/.zkm-toolchain/env
+```
 
 ## Running
 To run all benchmarks run:
