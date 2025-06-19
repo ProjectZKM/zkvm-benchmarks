@@ -1,6 +1,6 @@
 use std::error::Error;
-use std::{fs::File, io::Read};
 use std::time::{Duration, Instant};
+use std::{fs::File, io::Read};
 
 use tendermint_light_client_verifier::{
     options::Options, types::LightBlock, ProdVerifier, Verdict, Verifier,
@@ -36,10 +36,16 @@ pub fn bench_tendermint(_v: u32) -> (Duration, usize, u64) {
 
     println!("benchmark_tendermint start");
     let start = Instant::now();
-    let proof = client.prove(&pk, stdin.clone()).run().expect("proving failed");
+    let proof = client
+        .prove(&pk, stdin.clone())
+        .run()
+        .expect("proving failed");
     let end = Instant::now();
     let duration = end.duration_since(start);
-    println!("benchmark_tendermint end, duration: {:?}", duration.as_secs_f64());
+    println!(
+        "benchmark_tendermint end, duration: {:?}",
+        duration.as_secs_f64()
+    );
 
     // Verify proof.
     client.verify(&proof, &vk).expect("verification failed");
@@ -53,8 +59,14 @@ pub fn bench_tendermint(_v: u32) -> (Duration, usize, u64) {
     assert_eq!(proof.public_values.as_ref(), expected_public_values);
 
     // Execute the program using the `ProverClient.execute` method, without generating a proof.
-    let (_, report) = client.execute(TENDERMINT_ELF, stdin).run().expect("proving failed");
-    println!("executed program with {} cycles", report.total_instruction_count());
+    let (_, report) = client
+        .execute(TENDERMINT_ELF, stdin)
+        .run()
+        .expect("proving failed");
+    println!(
+        "executed program with {} cycles",
+        report.total_instruction_count()
+    );
 
     (duration, size(&proof), report.total_instruction_count())
 }
