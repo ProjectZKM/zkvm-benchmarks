@@ -14,6 +14,7 @@ const SHA3_CHAIN_ELF: &[u8] = include_elf!("sha3-chain");
 const SHA3_ELF: &[u8] = include_elf!("sha3-bench");
 const BIGMEM_ELF: &[u8] = include_elf!("bigmem");
 const MODPOW_ELF: &[u8] = include_elf!("modpow");
+const MUL2048_ELF: &[u8] = include_elf!("mul2048");
 
 pub fn init_logger() {
     std::env::set_var("RUST_LOG", "info");
@@ -246,6 +247,39 @@ pub fn benchmark_modpow(exp: u32) -> (Duration, usize, u64) {
     let duration = end.duration_since(start);
     println!(
         "benchmark_modpow end, duration: {:?}",
+        duration.as_secs_f64()
+    );
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
+pub fn benchmark_mul2048(iter: u32) -> (Duration, usize, u64) {
+    let client = EnvProver::new();
+    let (pk, vk) = client.setup(MUL2048_ELF);
+
+    let a = hex::decode("edda500f613951a98a9051e5a009adba8d3d1fa1c3b876f14e51a8388158fb092716fd5b2a9bfae5eab90fa4d3c5a40bd5a4670ee3a1c6a609fbefd468e7d7fc61f172c7c4e7f40755530f46e17a0b6b052e20d5f342fa153766d19b718074f44e704ac31ad38a9256c9c63dd2712ba819298bd8b4979d7f3823680079bf627270df7255bccb6eef84ed51603eff86626cfbfee0e8bfa557e1f3e45388e855065036c0acd25b33b3b4073456216889d40ed21057af056e96121a0c903f96f024a2d9170b502fb371986c17807e7e6ec39e3277d7bd5f21cfc32c9c4e7e681baad6e73c4d0d58407ce7667e793de9c64128ed6aca993ec65f53339503420fd453").unwrap();
+    let b = hex::decode("bf5d7af1eb193fb71b6728f31b0ba7f281e8135ce6d090ef940dad9b12630a191496853175073cbb70795680b0963ef5a1a6b6262ad6fdf126ed5d77073c52c0b113bc02f5c07dd940a9b54a3ded3e59ed6931d1ce1481615904dbb654d9958d3e1c747606a88105ef63095400df35fdd4a8ce892b4669f346036332a55bee61b5ae06b7743fd43619fb892e1fe0a9e66a77a7c4a72e3da46b277d364d5abfe71ef6d832a29ff0db4aa5803a6283436d93fef3ddbc5b9e409a261a60314b11fba27e1fdfadf104875b141e4406694e02a8daa10489efd3474bfac18da7547d8f1602c8723d24527bec8cb4f0e09bdbfe038267254920a73bde5b5ce4cd45e7da").unwrap();
+    let mut stdin = SP1Stdin::new();
+    stdin.write(&iter);
+    stdin.write(&a);
+    stdin.write(&b);
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(MUL2048_ELF, &stdin).run().unwrap();
+    println!(
+        "executed program with {} cycles",
+        report.total_instruction_count()
+    );
+
+    println!("benchmark_mul2048 start, iter: {}", iter);
+    let start = Instant::now();
+    let proof = client.prove(&pk, &stdin).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!(
+        "benchmark_mul2048 end, duration: {:?}",
         duration.as_secs_f64()
     );
 

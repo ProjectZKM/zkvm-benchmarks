@@ -509,6 +509,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "mul2048"
+version = "0.1.0"
+dependencies = [
+ "bytemuck",
+ "crypto-bigint",
+ "num-bigint-dig",
+ "sp1-zkvm",
+]
+
+[[package]]
 name = "num-bigint"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
