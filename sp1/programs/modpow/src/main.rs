@@ -20,7 +20,7 @@ pub fn main() {
         custom_modpow_u2048(&m_u2048, &e_u2048, &n_u2048);
     }
 
-    sp1_zkvm::io::commit(&num_iters);
+    sp1_zkvm::io::commit(&e);
 }
 
 /// Performs modular exponentiation of `base` to the power of `exp` modulo `modulus`.
@@ -69,7 +69,7 @@ fn mul_mod_u2048(a: &U2048, b: &U2048, modulus: &U2048) -> U2048 {
     let q_array = U2048::from_le_slice(&quotient_bytes);
     let result = U2048::from_le_slice(&result_bytes);
 
-    assert!(result > U2048::ZERO && result <= *modulus);
+    assert!(result >= U2048::ZERO && result < *modulus);
     assert!(prod == mul_u2048(q_array, *modulus).wrapping_add(&U4096::from(&result)));
     result
 }
