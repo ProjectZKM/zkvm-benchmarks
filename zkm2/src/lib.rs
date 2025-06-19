@@ -1,6 +1,3 @@
-// use num_bigint::BigUint;
-// use num_traits::Num;
-// use std::str::FromStr;
 use std::time::{Duration, Instant};
 use zkm_build::include_elf;
 use zkm_sdk::{ProverClient, ZKMStdin};

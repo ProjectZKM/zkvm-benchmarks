@@ -3,8 +3,6 @@ use zkm_script::*;
 
 fn main() {
     init_logger();
-    zkm_cuda_adaptor::ffi::create_ctx();
-    bench_fibonacci(100);
 
     let iters = [230, 460, 920, 1840, 3680];
     benchmark_v2(
