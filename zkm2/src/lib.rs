@@ -36,7 +36,7 @@ pub fn benchmark_with_shard_size(func: fn(u32) -> (Duration, usize, u64), iters:
 }
 
 pub fn benchmark_sha2_chain(iters: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(SHA2_CHAIN_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -61,7 +61,7 @@ pub fn benchmark_sha2_chain(iters: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha3_chain(iters: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(SHA3_CHAIN_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -86,7 +86,7 @@ pub fn benchmark_sha3_chain(iters: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha2(num_bytes: usize) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(SHA2_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -110,7 +110,7 @@ pub fn benchmark_sha2(num_bytes: usize) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha3(num_bytes: usize) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(SHA3_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -134,7 +134,7 @@ pub fn benchmark_sha3(num_bytes: usize) -> (Duration, usize, u64) {
 }
 
 pub fn bench_fibonacci(n: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(FIBONACCI_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -157,7 +157,7 @@ pub fn bench_fibonacci(n: u32) -> (Duration, usize, u64) {
 }
 
 pub fn bench_bigmem(value: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(BIGMEM_ELF);
 
     let mut stdin = ZKMStdin::new();
@@ -180,15 +180,14 @@ pub fn bench_bigmem(value: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_modpow(iters: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::cpu();
+    let client = ProverClient::new();
     let (pk, vk) = client.setup(MODPOW_ELF);
 
     let mut stdin = ZKMStdin::new();
     stdin.write(&iters);
     let m = hex::decode(
         "60908e3e36666b77de03caf7807ebe62e78d016aa5695ff5bc10b4fbbbe1f9cc"
-    )
-        .unwrap();
+    ).unwrap();
     let e = 65537u32;
     let n = hex::decode("c5529f21f0afe6df78e83aab07b66c11ed9203af47a8ab9fdda4a83b4ae767720b833d2e150fcb4a4aec2776d0aa9762a3955d402b0c2665d3c4aa5db002656b65c75712eef82289d92bd6a3fba04d846e3680d1f9c0598a6717f07ae65400feb9d62156ecb37e0ef0c781299e300e268d825205ffad8892e267e63083348de4670907a8e23d4a03bc3a34496abb923fdf6181126cb073cf7a41620be431c7e1dc65e3d80a62fd76d04f8d011435529c7d683fc9f7c766c4527d3082b7dd2e5254876e1c8b296f41618c92cbb359b54df35010caa84286c35d7bf32c2fefd11c655fa48390c35d54274454a0ff749f8951fb23ee79a01e51a052716df0bc44db").unwrap();
     stdin.write(&m);

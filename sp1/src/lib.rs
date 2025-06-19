@@ -1,7 +1,7 @@
 use std::time::{Duration, Instant};
 
 use sp1_build::include_elf;
-use sp1_sdk::{EnvProver, Prover, ProverClient, SP1Stdin};
+use sp1_sdk::{EnvProver, SP1Stdin};
 use utils::size;
 
 mod tendermint;
@@ -47,7 +47,7 @@ pub fn benchmark_with_shard_size(
 }
 
 pub fn benchmark_sha2_chain(iters: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(SHA2_CHAIN_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -78,7 +78,7 @@ pub fn benchmark_sha2_chain(iters: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha3_chain(iters: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(SHA3_CHAIN_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -109,7 +109,7 @@ pub fn benchmark_sha3_chain(iters: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha2(num_bytes: usize) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(SHA2_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -136,7 +136,7 @@ pub fn benchmark_sha2(num_bytes: usize) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_sha3(num_bytes: usize) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(SHA3_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -163,7 +163,7 @@ pub fn benchmark_sha3(num_bytes: usize) -> (Duration, usize, u64) {
 }
 
 pub fn bench_fibonacci(n: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(FIBONACCI_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -192,7 +192,7 @@ pub fn bench_fibonacci(n: u32) -> (Duration, usize, u64) {
 }
 
 pub fn bench_bigmem(value: u32) -> (Duration, usize, u64) {
-    let client = ProverClient::builder().cpu().build();
+    let client = EnvProver::new();
     let (pk, vk) = client.setup(BIGMEM_ELF);
 
     let mut stdin = SP1Stdin::new();
@@ -221,7 +221,6 @@ pub fn bench_bigmem(value: u32) -> (Duration, usize, u64) {
 }
 
 pub fn benchmark_modpow(iters: u32) -> (Duration, usize, u64) {
-    // let client = ProverClient::builder().cpu().build();
     let client = EnvProver::new();
     let (pk, vk) = client.setup(MODPOW_ELF);
 
