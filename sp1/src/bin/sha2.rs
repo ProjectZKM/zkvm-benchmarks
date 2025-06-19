@@ -1,9 +1,14 @@
-use utils::benchmark_v2;
 use sp1_script::{benchmark_sha2, init_logger};
+use utils::benchmark_v2;
 
 fn main() {
     init_logger();
 
     let lengths = [32, 256, 512, 1024, 2048];
-    benchmark_v2(benchmark_sha2, &lengths, "../benchmark_outputs/sha2_sp1.csv", "byte length");
+    benchmark_v2(
+        benchmark_sha2,
+        &lengths,
+        "../benchmark_outputs/sha2_sp1.csv",
+        "byte length",
+    );
 }

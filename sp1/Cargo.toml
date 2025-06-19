@@ -14,12 +14,12 @@ tendermint-light-client-verifier = { version = "0.35.0", default-features = fals
   "rust-crypto",
 ] }
 serde_cbor = "0.11.2"
-sp1-build = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
-sp1-core-machine = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
-sp1-sdk = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
+sp1-build = "5.0.5"
+sp1-core-machine = "5.0.5"
+sp1-sdk = "5.0.5"
 
 [build-dependencies]
-sp1-build = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
+sp1-build = "5.0.0"
 
 [[bin]]
 name = "fibo"
@@ -48,6 +48,10 @@ path = "src/bin/sha3_chain.rs"
 [[bin]]
 name = "tend"
 path = "src/bin/tendermint.rs"
+
+[[bin]]
+name = "modpow"
+path = "src/bin/modpow.rs"
 
 [[bin]]
 name = "all"

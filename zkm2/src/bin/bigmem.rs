@@ -5,5 +5,10 @@ fn main() {
     init_logger();
 
     let values = [5u32];
-    benchmark_v2(bench_bigmem, &values, "../benchmark_outputs/bigmem_zkm2.csv", "value");
+    benchmark_v2(
+        bench_bigmem,
+        &values,
+        "../benchmark_outputs/bigmem_zkm2.csv",
+        "value",
+    );
 }
