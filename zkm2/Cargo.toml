@@ -60,5 +60,10 @@ name = "modpow"
 path = "src/bin/modpow.rs"
 
 [[bin]]
+name = "mul2048"
+path = "src/bin/mul2048.rs"
+
+
+[[bin]]
 name = "all"
 path = "src/main.rs"

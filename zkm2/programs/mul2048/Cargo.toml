@@ -1,0 +1,11 @@
+[package]
+version = "0.1.0"
+name = "mul2048"
+edition = "2021"
+
+[dependencies]
+zkm-zkvm = { workspace = true }
+crypto-bigint = "0.5.5"
+bytemuck = { version = "1.16.1", features = ["derive"] }
+num-bigint = { workspace = true }
+num-traits = { workspace = true }

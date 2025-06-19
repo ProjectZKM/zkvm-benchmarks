@@ -7,7 +7,8 @@ members = [
     "sha3",
     "sha3-chain",
     "tendermint",
-    "modpow"
+    "modpow",
+    "mul2048"
 ]
 resolver = "2"
 
