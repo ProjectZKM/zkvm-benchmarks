@@ -9,7 +9,6 @@ use zkm_lib::io::hint_slice;
 use bytemuck::cast_ref;
 
 pub fn main() {
-    let num_iters: u32 = zkm_zkvm::io::read();
     let m: Vec<u8> = zkm_zkvm::io::read();
     let e: u32 = zkm_zkvm::io::read();
     let n: Vec<u8> = zkm_zkvm::io::read();
@@ -17,11 +16,11 @@ pub fn main() {
     let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&m));
     let e_u2048 = from_biguint_to_u2048(&BigUint::from(e));
     let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&n));
-    for _ in 0..num_iters {
+    for _ in 0..3 {
         custom_modpow_u2048(&m_u2048, &e_u2048, &n_u2048);
     }
 
-    zkm_zkvm::io::commit(&num_iters);
+    zkm_zkvm::io::commit(&e);
 }
 
 /// Performs modular exponentiation of `base` to the power of `exp` modulo `modulus`.

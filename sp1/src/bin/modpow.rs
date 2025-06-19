@@ -3,12 +3,12 @@ use utils::benchmark_v2;
 
 fn main() {
     init_logger();
-    let iters = [2, 3, 5];
+    let exp = [257, 521, 1031, 2053, 4099, 8209, 16411, 32771];
 
     benchmark_v2(
         benchmark_modpow,
-        &iters,
+        &exp,
         "../benchmark_outputs/modpow_sp1.csv",
-        "iters",
+        "exp",
     );
 }

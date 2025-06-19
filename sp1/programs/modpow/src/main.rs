@@ -9,7 +9,6 @@ use sp1_lib::io::hint_slice;
 use bytemuck::cast_ref;
 
 pub fn main() {
-    let num_iters: u32 = sp1_zkvm::io::read();
     let m: Vec<u8> = sp1_zkvm::io::read();
     let e: u32 = sp1_zkvm::io::read();
     let n: Vec<u8> = sp1_zkvm::io::read();
@@ -17,7 +16,7 @@ pub fn main() {
     let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&m));
     let e_u2048 = from_biguint_to_u2048(&BigUint::from(e));
     let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&n));
-    for _ in 0..num_iters {
+    for _ in 0..3 {
         custom_modpow_u2048(&m_u2048, &e_u2048, &n_u2048);
     }
 

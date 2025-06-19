@@ -12,8 +12,8 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-zkm-zkvm = { git = "https://github.com/zkMIPS/zkMIPS.git", tag = "v1.1.0" }
-zkm-lib = { git = "https://github.com/zkMIPS/zkMIPS.git", tag = "v1.1.0" }
+zkm-zkvm = { git = "https://github.com/zkMIPS/zkMIPS.git" }
+zkm-lib = { git = "https://github.com/zkMIPS/zkMIPS.git" }
 num-traits = "0.2.18"
 num-bigint = { version = "0.8.2", features = ["i128", "prime", "zeroize"], default-features = false, package = "num-bigint-dig" }
 serde = "1.0.204"
