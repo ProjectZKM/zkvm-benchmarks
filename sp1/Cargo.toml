@@ -50,5 +50,9 @@ name = "tend"
 path = "src/bin/tendermint.rs"
 
 [[bin]]
+name = "modpow"
+path = "src/bin/modpow.rs"
+
+[[bin]]
 name = "all"
 path = "src/main.rs"

@@ -2,6 +2,7 @@
 members = [
   "bigmem",
   "fibonacci",
+  "modpow",
   "sha2",
   "sha2-chain",
   "sha3",
@@ -11,9 +12,12 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
+sp1-lib = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
 sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", rev = "c97ccf2" }
 serde = "1.0.204"
 serde_json = "1.0.132"
+num-bigint = { version = "0.8.2", features = ["i128", "prime", "zeroize"], default-features = false, package = "num-bigint-dig" }
+num-traits = "0.2.18"
 
 [workspace.package]
 version = "1.1.0"
