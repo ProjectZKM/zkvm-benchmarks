@@ -49,21 +49,20 @@ fn custom_modpow_u2048(base: &U2048, exp: &U2048, modulus: &U2048) -> BigUint {
     result_biguint
 }
 
-
 /// Performs modular multiplication of `a` and `b` with `modulus`.
 /// It calculates the quotient and remainder in unconstrained.
 fn mul_mod_u2048(a: &U2048, b: &U2048, modulus: &U2048) -> U2048 {
     let prod = mul_u2048(*a, *b);
     zkm_lib::unconstrained! {
-                let modulus_u4096 = U4096::from(modulus);
-                let modulus_u4096_nonzero = NonZero::new(modulus_u4096).unwrap(); // Convert modulus to NonZero
-                let (quotient, result) = prod.div_rem(&modulus_u4096_nonzero);
-                let result_bytes = result.to_le_bytes();
-                let quotient_bytes = quotient.to_le_bytes();
+        let modulus_u4096 = U4096::from(modulus);
+        let modulus_u4096_nonzero = NonZero::new(modulus_u4096).unwrap(); // Convert modulus to NonZero
+        let (quotient, result) = prod.div_rem(&modulus_u4096_nonzero);
+        let result_bytes = result.to_le_bytes();
+        let quotient_bytes = quotient.to_le_bytes();
 
-                hint_slice(&result_bytes[..256]);
-                hint_slice(&quotient_bytes[..256]);
-            }
+        hint_slice(&result_bytes[..256]);
+        hint_slice(&quotient_bytes[..256]);
+    }
 
     let result_bytes: [u8; 256] = zkm_lib::io::read_vec().try_into().unwrap();
     let quotient_bytes: [u8; 256] = zkm_lib::io::read_vec().try_into().unwrap();
