@@ -14,9 +14,9 @@ pub fn main() {
     let e: u32 = sp1_zkvm::io::read();
     let n: Vec<u8> = sp1_zkvm::io::read();
 
-    let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&m));
+    let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&m));
     let e_u2048 = from_biguint_to_u2048(&BigUint::from(e));
-    let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&n));
+    let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&n));
     for _ in 0..num_iters {
         custom_modpow_u2048(&m_u2048, &e_u2048, &n_u2048);
     }
@@ -70,8 +70,8 @@ fn mul_mod_u2048(a: &U2048, b: &U2048, modulus: &U2048) -> U2048 {
     let q_array = U2048::from_le_slice(&quotient_bytes);
     let result = U2048::from_le_slice(&result_bytes);
 
-    // assert!(result > U2048::ZERO && result <= *modulus);
-    // assert!(prod == mul_u2048(q_array, *modulus).wrapping_add(&U4096::from(&result)));
+    assert!(result > U2048::ZERO && result <= *modulus);
+    assert!(prod == mul_u2048(q_array, *modulus).wrapping_add(&U4096::from(&result)));
     result
 }
 
