@@ -1,5 +1,5 @@
-use utils::benchmark_v2;
 use sp1_script::{benchmark_modpow, init_logger};
+use utils::benchmark_v2;
 
 fn main() {
     init_logger();
