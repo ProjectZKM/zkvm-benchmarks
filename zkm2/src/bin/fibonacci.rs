@@ -5,5 +5,10 @@ fn main() {
     init_logger();
 
     let ns = [100, 1000, 10000, 50000];
-    benchmark_v2(bench_fibonacci, &ns, "../benchmark_outputs/fibonacci_zkm2.csv", "n");
+    benchmark_v2(
+        bench_fibonacci,
+        &ns,
+        "../benchmark_outputs/fibonacci_zkm2.csv",
+        "n",
+    );
 }
