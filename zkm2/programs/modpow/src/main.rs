@@ -13,9 +13,9 @@ pub fn main() {
     let e: u32 = zkm_zkvm::io::read();
     let n: Vec<u8> = zkm_zkvm::io::read();
 
-    let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&m));
+    let m_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&m));
     let e_u2048 = from_biguint_to_u2048(&BigUint::from(e));
-    let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_be(&n));
+    let n_u2048 = from_biguint_to_u2048(&BigUint::from_bytes_le(&n));
     for _ in 0..3 {
         custom_modpow_u2048(&m_u2048, &e_u2048, &n_u2048);
     }
