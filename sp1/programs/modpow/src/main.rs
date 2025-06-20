@@ -63,14 +63,14 @@ fn mul_mod_u2048(a: &U2048, b: &U2048, modulus: &U2048) -> U2048 {
         hint_slice(&quotient_bytes[..256]);
     }
 
-    let result_bytes: [u8; 256] = sp1_lib::io::read_vec().try_into().unwrap();
     let quotient_bytes: [u8; 256] = sp1_lib::io::read_vec().try_into().unwrap();
+    let result_bytes: [u8; 256] = sp1_lib::io::read_vec().try_into().unwrap();
 
     let q_array = U2048::from_le_slice(&quotient_bytes);
     let result = U2048::from_le_slice(&result_bytes);
 
     assert!(result >= U2048::ZERO && result < *modulus);
-    assert!(prod == mul_u2048(q_array, *modulus).wrapping_add(&U4096::from(&result)));
+    assert_eq!(prod, mul_u2048(q_array, *modulus).wrapping_add(&U4096::from(&result)));
     result
 }
 
