@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         benchmark_mul2048,
         &iters,
-        "../benchmark_outputs/mul2048_zkm2.csv",
+        "../benchmark_outputs/mul2048_ziren.csv",
         "iters",
     );
 }

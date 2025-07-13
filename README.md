@@ -25,13 +25,13 @@ sp1up
 
 ### Install zkm
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ProjectZKM/toolchain/refs/heads/main/setup.sh | sh
 source ~/.zkm-toolchain/env
 ```
 
-### Install zkm2
+### Install ziren
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/zkMIPS/toolchain/refs/heads/main/setup.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ProjectZKM/toolchain/refs/heads/main/setup.sh | sh
 source ~/.zkm-toolchain/env
 ```
 
@@ -43,7 +43,7 @@ make bench-all
 
 The benchmark results should be outputted in CSV form in `benchmark_outputs`.
 
-To run an individual benchmark run `make bench-zkm2`, `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
+To run an individual benchmark run `make bench-ziren`, `make bench-zkm`, `make bench-jolt`, `make bench-risczero` or `make bench-sp1`.
 
 
 ## Disclaimer

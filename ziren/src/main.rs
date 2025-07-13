@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         benchmark_sha3_chain,
         &iters,
-        "../benchmark_outputs/sha3_chain_zkm2.csv",
+        "../benchmark_outputs/sha3_chain_ziren.csv",
         "iters",
     );
 
@@ -16,13 +16,13 @@ fn main() {
     benchmark_v2(
         benchmark_sha2,
         &lengths,
-        "../benchmark_outputs/sha2_zkm2.csv",
+        "../benchmark_outputs/sha2_ziren.csv",
         "byte length",
     );
     benchmark_v2(
         benchmark_sha3,
         &lengths,
-        "../benchmark_outputs/sha3_zkm2.csv",
+        "../benchmark_outputs/sha3_ziren.csv",
         "byte length",
     );
 
@@ -30,7 +30,7 @@ fn main() {
     benchmark_v2(
         bench_fibonacci,
         &ns,
-        "../benchmark_outputs/fibonacci_zkm2.csv",
+        "../benchmark_outputs/fibonacci_ziren.csv",
         "n",
     );
 
@@ -38,12 +38,12 @@ fn main() {
     benchmark_v2(
         bench_bigmem,
         &values,
-        "../benchmark_outputs/bigmem_zkm2.csv",
+        "../benchmark_outputs/bigmem_ziren.csv",
         "value",
     );
 
     // let values = [2279100u32];
-    // benchmark_v2(bench_tendermint, &values, "../benchmark_outputs/tendermint_zkm2.csv", "block");
+    // benchmark_v2(bench_tendermint, &values, "../benchmark_outputs/tendermint_ziren.csv", "block");
 
     let iters = [230, 460];
     // 1 Shard
@@ -52,7 +52,7 @@ fn main() {
         benchmark_sha2_chain,
         &iters,
         &shard_sizes,
-        "../benchmark_outputs/sha2_chain_zkm2_1_shard.csv",
+        "../benchmark_outputs/sha2_chain_ziren_1_shard.csv",
         "iters",
     );
 
@@ -62,7 +62,7 @@ fn main() {
         benchmark_sha2_chain,
         &iters,
         &shard_sizes,
-        "../benchmark_outputs/sha2_chain_zkm2_2_shard.csv",
+        "../benchmark_outputs/sha2_chain_ziren_2_shard.csv",
         "iters",
     );
 
@@ -72,7 +72,7 @@ fn main() {
         benchmark_sha2_chain,
         &iters,
         &shard_sizes,
-        "../benchmark_outputs/sha2_chain_zkm2_4_shard.csv",
+        "../benchmark_outputs/sha2_chain_ziren_4_shard.csv",
         "iters",
     );
 
@@ -82,7 +82,7 @@ fn main() {
         benchmark_sha2_chain,
         &iters,
         &shard_sizes,
-        "../benchmark_outputs/sha2_chain_zkm2_8_shard.csv",
+        "../benchmark_outputs/sha2_chain_ziren_8_shard.csv",
         "iters",
     );
 
@@ -92,7 +92,7 @@ fn main() {
         benchmark_sha2_chain,
         &iters,
         &shard_sizes,
-        "../benchmark_outputs/sha2_chain_zkm2_16_shard.csv",
+        "../benchmark_outputs/sha2_chain_ziren_16_shard.csv",
         "iters",
     );
 }

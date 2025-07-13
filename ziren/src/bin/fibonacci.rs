@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         bench_fibonacci,
         &ns,
-        "../benchmark_outputs/fibonacci_zkm2.csv",
+        "../benchmark_outputs/fibonacci_ziren.csv",
         "n",
     );
 }

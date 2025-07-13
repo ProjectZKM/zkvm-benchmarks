@@ -3,7 +3,7 @@ bench-all:
 	make bench-sp1
 	make bench-risczero
 	make bench-zkm
-	make bench-zkm2
+	make bench-ziren
 
 bench-jolt:
 	cd jolt && RUSTFLAGS="-C target-cpu=native" cargo run --release
@@ -16,8 +16,8 @@ bench-zkm:
 	# rust toolchain path: ~/.zkm-toolchain/rust-toolchain-x86-64-unknown-linux-gnu-20241217/bin
 	cd zkm && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
 
-bench-zkm2:
-	cd zkm2 && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
+bench-ziren:
+	cd ziren && RUSTFLAGS="-C target-cpu=native" cargo run --bin all --release
 
 bench-risczero:
 	# rust toolchain path: ~/.risc0/toolchains/r0.1.81.0-risc0-rust-x86_64-unknown-linux-gnu/bin/

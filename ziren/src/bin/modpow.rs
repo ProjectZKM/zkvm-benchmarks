@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         benchmark_modpow,
         &exp,
-        "../benchmark_outputs/modpow_zkm2.csv",
+        "../benchmark_outputs/modpow_ziren.csv",
         "exp",
     );
 }
