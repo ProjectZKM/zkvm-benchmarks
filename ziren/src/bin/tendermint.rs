@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         bench_tendermint,
         &values,
-        "../benchmark_outputs/tendermint_zkm2.csv",
+        "../benchmark_outputs/tendermint_ziren.csv",
         "block",
     );
 }

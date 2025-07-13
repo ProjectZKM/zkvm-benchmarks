@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         benchmark_sha3_chain,
         &iters,
-        "../benchmark_outputs/sha3_chain_zkm2.csv",
+        "../benchmark_outputs/sha3_chain_ziren.csv",
         "iters",
     );
 }

@@ -8,7 +8,7 @@ fn main() {
     benchmark_v2(
         bench_bigmem,
         &values,
-        "../benchmark_outputs/bigmem_zkm2.csv",
+        "../benchmark_outputs/bigmem_ziren.csv",
         "value",
     );
 }
