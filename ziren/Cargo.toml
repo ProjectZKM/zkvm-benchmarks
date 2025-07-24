@@ -16,15 +16,15 @@ tendermint-light-client-verifier = { version = "0.35.0", default-features = fals
     "rust-crypto",
 ] }
 serde_cbor = "0.11.2"
-zkm-build = { git = "https://github.com/ProjectZKM/Ziren.git", tag = "v1.1.0" }
-zkm-core-machine = { git = "https://github.com/ProjectZKM/Ziren.git", tag = "v1.1.0" }
-zkm-sdk = { git = "https://github.com/ProjectZKM/Ziren.git", tag = "v1.1.0" }
+zkm-build = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
+zkm-core-machine = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
+zkm-sdk = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
 # zkm-build = { path = "../../zkMIPS/crates/build" }
 # zkm-core-machine = { path = "../../zkMIPS/crates/core/machine" }
 # zkm-sdk = { path = "../../zkMIPS/crates/sdk" }
 
 [build-dependencies]
-zkm-build = { git = "https://github.com/ProjectZKM/Ziren.git", tag = "v1.1.0" }
+zkm-build = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
 # zkm-build = { path = "../../zkMIPS/crates/build" }
 
 [[bin]]
@@ -62,6 +62,14 @@ path = "src/bin/modpow.rs"
 [[bin]]
 name = "mul2048"
 path = "src/bin/mul2048.rs"
+
+[[bin]]
+name = "poseidon2"
+path = "src/bin/poseidon2.rs"
+
+[[bin]]
+name = "poseidon2-chain"
+path = "src/bin/poseidon2_chain.rs"
 
 
 [[bin]]

@@ -8,13 +8,15 @@ members = [
     "sha3-chain",
     "tendermint",
     "modpow",
-    "mul2048"
+    "mul2048",
+    "poseidon2",
+    "poseidon2-chain",
 ]
 resolver = "2"
 
 [workspace.dependencies]
-zkm-zkvm = { git = "https://github.com/ProjectZKM/Ziren.git" }
-zkm-lib = { git = "https://github.com/ProjectZKM/Ziren.git" }
+zkm-zkvm = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
+zkm-lib = { git = "https://github.com/ProjectZKM/Ziren.git", branch = "poseidon2" }
 num-traits = "0.2.18"
 num-bigint = { version = "0.8.2", features = ["i128", "prime", "zeroize"], default-features = false, package = "num-bigint-dig" }
 serde = "1.0.204"

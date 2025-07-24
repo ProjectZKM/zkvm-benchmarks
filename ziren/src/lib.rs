@@ -14,6 +14,8 @@ const SHA3_ELF: &[u8] = include_elf!("sha3-bench");
 const BIGMEM_ELF: &[u8] = include_elf!("bigmem");
 const MODPOW_ELF: &[u8] = include_elf!("modpow");
 const MUL2048_ELF: &[u8] = include_elf!("mul2048");
+const POSEIDON2_ELF: &[u8] = include_elf!("poseidon2");
+const POSEIDON2_CHAIN_ELF: &[u8] = include_elf!("poseidon2-chain");
 
 pub fn init_logger() {
     std::env::set_var("RUST_LOG", "info");
@@ -284,6 +286,64 @@ pub fn benchmark_mul2048(iter: u32) -> (Duration, usize, u64) {
     );
 
     client.verify(&proof, &vk).expect("verification failed");
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
+pub fn benchmark_poseidon2(num_bytes: usize) -> (Duration, usize, u64) {
+    let client = ProverClient::new();
+    let (pk, vk) = client.setup(POSEIDON2_ELF);
+
+    let mut stdin = ZKMStdin::new();
+    let input = vec![5u8; num_bytes];
+    stdin.write(&input);
+
+    println!("benchmark_poseidon2 start, num_bytes: {}", num_bytes);
+    let start = Instant::now();
+    let proof = client.prove(&pk, stdin.clone()).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!("benchmark_poseidon2 end, duration: {:?}", duration.as_secs_f64());
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(POSEIDON2_ELF, stdin).run().unwrap();
+    println!(
+        "executed program with {} cycles",
+        report.total_instruction_count()
+    );
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
+pub fn benchmark_poseidon2_chain(iters: u32) -> (Duration, usize, u64) {
+    let client = ProverClient::new();
+    let (pk, vk) = client.setup(POSEIDON2_CHAIN_ELF);
+
+    let mut stdin = ZKMStdin::new();
+    let input = [5u8; 32];
+    stdin.write(&input);
+    stdin.write(&iters);
+
+    println!("benchmark_poseidon2_chain start, iters: {}", iters);
+    let start = Instant::now();
+    let proof = client.prove(&pk, stdin.clone()).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!(
+        "benchmark_poseidon2_chain end, duration: {:?}",
+        duration.as_secs_f64()
+    );
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(POSEIDON2_CHAIN_ELF, stdin).run().unwrap();
+    println!(
+        "executed program with {} cycles",
+        report.total_instruction_count()
+    );
 
     (duration, size(&proof), report.total_instruction_count())
 }

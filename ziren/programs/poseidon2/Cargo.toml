@@ -1,0 +1,8 @@
+[package]
+version = "0.1.0"
+name = "poseidon2"
+edition = "2021"
+
+[dependencies]
+zkm-zkvm = { workspace = true }
+poseidon2 = { git = "https://github.com/ProjectZKM/poseidon2" }

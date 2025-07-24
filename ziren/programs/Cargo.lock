@@ -757,6 +757,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "poseidon2"
+version = "0.1.0"
+dependencies = [
+ "poseidon2 0.1.0 (git+https://github.com/ProjectZKM/poseidon2)",
+ "zkm-zkvm",
+]
+
+[[package]]
+name = "poseidon2"
+version = "0.1.0"
+source = "git+https://github.com/ProjectZKM/poseidon2#74f9d09c4bf925402ca6b0a78035b50a1534e2b2"
+dependencies = [
+ "cfg-if",
+ "p3-field",
+ "p3-koala-bear",
+ "p3-symmetric",
+ "zkm-primitives",
+]
+
+[[package]]
+name = "poseidon2-chain"
+version = "0.1.0"
+dependencies = [
+ "poseidon2 0.1.0 (git+https://github.com/ProjectZKM/poseidon2)",
+ "zkm-zkvm",
+]
+
+[[package]]
 name = "powerfmt"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1277,7 +1305,7 @@ dependencies = [
 [[package]]
 name = "zkm-lib"
 version = "1.1.1"
-source = "git+https://github.com/ProjectZKM/Ziren.git#5d29c119aff17fb030179559e497d40303608a70"
+source = "git+https://github.com/ProjectZKM/Ziren.git?branch=poseidon2#20c8658aac71aa69b68fd96dbf7856123e7e4151"
 dependencies = [
  "bincode",
  "cfg-if",
@@ -1290,7 +1318,7 @@ dependencies = [
 [[package]]
 name = "zkm-primitives"
 version = "1.1.1"
-source = "git+https://github.com/ProjectZKM/Ziren.git#5d29c119aff17fb030179559e497d40303608a70"
+source = "git+https://github.com/ProjectZKM/Ziren.git?branch=poseidon2#20c8658aac71aa69b68fd96dbf7856123e7e4151"
 dependencies = [
  "bincode",
  "hex",
@@ -1308,7 +1336,7 @@ dependencies = [
 [[package]]
 name = "zkm-zkvm"
 version = "1.1.1"
-source = "git+https://github.com/ProjectZKM/Ziren.git#5d29c119aff17fb030179559e497d40303608a70"
+source = "git+https://github.com/ProjectZKM/Ziren.git?branch=poseidon2#20c8658aac71aa69b68fd96dbf7856123e7e4151"
 dependencies = [
  "bincode",
  "cfg-if",
