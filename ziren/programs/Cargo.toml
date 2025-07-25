@@ -11,6 +11,7 @@ members = [
     "mul2048",
     "poseidon2",
     "poseidon2-chain",
+    "poseidon2-permute",
 ]
 resolver = "2"
 

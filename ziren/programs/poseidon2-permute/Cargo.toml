@@ -1,0 +1,7 @@
+[package]
+version = "0.1.0"
+name = "poseidon2-permute"
+edition = "2021"
+
+[dependencies]
+zkm-zkvm = { workspace = true }

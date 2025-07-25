@@ -16,6 +16,7 @@ const MODPOW_ELF: &[u8] = include_elf!("modpow");
 const MUL2048_ELF: &[u8] = include_elf!("mul2048");
 const POSEIDON2_ELF: &[u8] = include_elf!("poseidon2");
 const POSEIDON2_CHAIN_ELF: &[u8] = include_elf!("poseidon2-chain");
+const POSEIDON2_PERMUTE_ELF: &[u8] = include_elf!("poseidon2-permute");
 
 pub fn init_logger() {
     std::env::set_var("RUST_LOG", "info");
@@ -340,6 +341,37 @@ pub fn benchmark_poseidon2_chain(iters: u32) -> (Duration, usize, u64) {
 
     // Execute the program using the `ProverClient.execute` method, without generating a proof.
     let (_, report) = client.execute(POSEIDON2_CHAIN_ELF, stdin).run().unwrap();
+    println!(
+        "executed program with {} cycles",
+        report.total_instruction_count()
+    );
+
+    (duration, size(&proof), report.total_instruction_count())
+}
+
+pub fn benchmark_poseidon2_permute(iters: u32) -> (Duration, usize, u64) {
+    let client = ProverClient::new();
+    let (pk, vk) = client.setup(POSEIDON2_PERMUTE_ELF);
+
+    let mut stdin = ZKMStdin::new();
+    let input = [5u32; 16];
+    stdin.write(&input);
+    stdin.write(&iters);
+
+    println!("benchmark_poseidon2_permute start, iters: {}", iters);
+    let start = Instant::now();
+    let proof = client.prove(&pk, stdin.clone()).run().unwrap();
+    let end = Instant::now();
+    let duration = end.duration_since(start);
+    println!(
+        "benchmark_poseidon2_permute end, duration: {:?}",
+        duration.as_secs_f64()
+    );
+
+    client.verify(&proof, &vk).expect("verification failed");
+
+    // Execute the program using the `ProverClient.execute` method, without generating a proof.
+    let (_, report) = client.execute(POSEIDON2_PERMUTE_ELF, stdin).run().unwrap();
     println!(
         "executed program with {} cycles",
         report.total_instruction_count()

@@ -71,6 +71,10 @@ path = "src/bin/poseidon2.rs"
 name = "poseidon2-chain"
 path = "src/bin/poseidon2_chain.rs"
 
+[[bin]]
+name = "poseidon2-permute"
+path = "src/bin/poseidon2_permute.rs"
+
 
 [[bin]]
 name = "all"
